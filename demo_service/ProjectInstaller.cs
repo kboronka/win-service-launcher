@@ -36,7 +36,7 @@ namespace demo_service
 			serviceProcessInstaller.Account = ServiceAccount.LocalSystem;
 			
 			serviceInstaller.ServiceName = demo_service.MyServiceName;
-			//serviceInstaller.StartType = ServiceStartMode.Automatic;
+			serviceInstaller.StartType = ServiceStartMode.Automatic;
 			//serviceInstaller.DelayedAutoStart = true;
 			
 			this.Installers.AddRange(new Installer[] { serviceProcessInstaller, serviceInstaller });
