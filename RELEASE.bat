@@ -27,28 +27,27 @@
 	echo "VERSION.MAJOR.MINOR.BUILD".
 	set /p VERSION="> "
 
+	del .\demo_service_tester\bin\Release\*.* /q
 	svn cleanup
-	svn update	
+	svn update
 	%SAR% -f.bsd \demo_service_tester\*.cs "Kevin Boronka"
 	%SAR% -f.bsd \demo_service\*.cs "Kevin Boronka"
 	%SAR% -assy.ver \demo_service_tester\AssemblyInfo.* %VERSION%
 	%SAR% -assy.ver \demo_service\AssemblyInfo.* %VERSION%
 
 	echo building binaries
-	%SAR% -b.net 3.5 %SOLUTION% /p:Configuration=%CONFIG% /p:Platform=\"x86\"
+	%SAR% -b.net 4.0 %SOLUTION% /p:Configuration=%CONFIG% /p:Platform=\"x86\"
 	if errorlevel 1 goto BuildFailed
 
 	
 :BuildComplete
 	::copy sar\bin\%CONFIG%\sar.exe sar.exe
-	::%ZIP% "sar %VERSION%.zip" sar.exe
-	::del sar.exe
+	%ZIP% "win-service-lauchner v%VERSION%.zip" .\demo_service_tester\bin\Release\*.*
 	
-	::svn commit -m "sar version %VERSION%"
-	::svn copy %REPO%/trunk %REPO%/tags/%VERSION% -m "Tagging the %VERSION% version release of the project"
-	::svn update
+	svn commit -m "sar version %VERSION%"
+	svn copy %REPO%/trunk %REPO%/tags/%VERSION% -m "Tagging the %VERSION% version release of the project"
+	svn update
 
-	pause
 	echo build completed
 	popd
 	exit /b 0
