@@ -29,13 +29,24 @@ namespace demo_service
 		
 		public ProjectInstaller()
 		{
+			//this.AfterInstall += new InstallEventHandler(ServiceInstaller_AfterInstall);
 			serviceProcessInstaller = new ServiceProcessInstaller();
 			serviceInstaller = new ServiceInstaller();
 			// Here you can set properties on serviceProcessInstaller or register event handlers
 			serviceProcessInstaller.Account = ServiceAccount.LocalSystem;
 			
 			serviceInstaller.ServiceName = demo_service.MyServiceName;
+			//serviceInstaller.StartType = ServiceStartMode.Automatic;
+			//serviceInstaller.DelayedAutoStart = true;
+			
 			this.Installers.AddRange(new Installer[] { serviceProcessInstaller, serviceInstaller });
+		}
+		
+		private void ServiceInstaller_AfterInstall(object sender, InstallEventArgs e)
+		{
+			//ServiceController serviceController = new ServiceController(serviceInstaller.ServiceName);
+			//ServiceHelper.ChangeStartMode(serviceController, ServiceStartMode.Automatic);
+			//serviceController.Start();
 		}
 	}
 }
