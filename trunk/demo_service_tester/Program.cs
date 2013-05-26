@@ -30,9 +30,6 @@ namespace demo_service_tester
 				ConsoleHelper.Start();
 				ConsoleHelper.ApplicationTitle();
 				
-				#if DEBUG
-				ShellResults results;
-				
 				// rename service exe file
 				string serviceBuildEXE = IO.FindFile("demo_service.exe");
 				string root = IO.GetRoot(serviceBuildEXE);
@@ -53,23 +50,26 @@ namespace demo_service_tester
 				
 				ServiceHelper.Start(serviceDemoEXE);
 				ConsoleHelper.WriteLine(serviceName + " started");
+				ConsoleHelper.Write("done - press any key to stop and uninstall the service", ConsoleColor.Yellow);
 				ConsoleHelper.ReadKey();
+				ConsoleHelper.WriteLine();
 				
 				
 				ServiceHelper.Stop(serviceDemoEXE);
 				ConsoleHelper.WriteLine(serviceName + " stopped");
 				
+				
 				ServiceHelper.Uninstall("4.0", serviceDemoEXE);
 				ConsoleHelper.WriteLine(serviceName + " uninstalled");
+				ConsoleHelper.Write("done - press any key to exit", ConsoleColor.Yellow);
 				ConsoleHelper.ReadKey();
-				#endif
+				ConsoleHelper.WriteLine();
 			}
 			catch (Exception ex)
 			{
 				ConsoleHelper.WriteException(ex);
 				ConsoleHelper.ReadKey();
 			}
-			
 
 			ConsoleHelper.Shutdown();
 		}
