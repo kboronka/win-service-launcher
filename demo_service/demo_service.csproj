@@ -54,5 +54,11 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\lib\skylib-source\SkyLib.csproj">
+      <Project>{6018DC4A-ACD2-4A66-A4A5-1975FC28639A}</Project>
+      <Name>SkyLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

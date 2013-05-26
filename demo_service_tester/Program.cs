@@ -31,44 +31,38 @@ namespace demo_service_tester
 				ConsoleHelper.ApplicationTitle();
 				
 				#if DEBUG
-				
-				// find
-				string dotNetFolder = IO.FindDotNetFolder("4.0");
-				ConsoleHelper.DebugWriteLine("dotNetFolder = " + dotNetFolder);
-				string installUtil = IO.FindFile(dotNetFolder, "Installutil.exe");
+				ShellResults results;
 				
 				// rename service exe file
 				string serviceBuildEXE = IO.FindFile("demo_service.exe");
 				string root = IO.GetRoot(serviceBuildEXE);
 				string serviceBuildFileName = IO.GetFilename(serviceBuildEXE);
-				string serviceDemoEXE = root + StringHelper.TrimEnd(serviceBuildFileName, IO.GetFileExtension(serviceBuildEXE).Length + 1) + "_DEBUG.exe";
-				if (File.Exists(serviceDemoEXE)) File.Delete(serviceDemoEXE);
-				File.Copy(serviceBuildEXE, serviceDemoEXE);
+				string serviceName = StringHelper.TrimEnd(serviceBuildFileName, IO.GetFileExtension(serviceBuildEXE).Length + 1);
 				
-				ShellResults results = Shell.Run(installUtil, "/i " + IO.GetFilename(serviceDemoEXE));
-				ConsoleHelper.DebugWriteLine(results.Output);
-				ConsoleHelper.DebugWriteLine(ConsoleHelper.HR);
-				ConsoleHelper.WriteLine(IO.GetFilename(serviceDemoEXE) + " installed");
+				string serviceDemoEXE = serviceBuildEXE;
+				//string serviceDemoEXE = root + serviceName + "_DEBUG.exe";
+				//if (File.Exists(serviceDemoEXE)) File.Delete(serviceDemoEXE);
+				//File.Copy(serviceBuildEXE, serviceDemoEXE);
+				
+				
+				ServiceHelper.TryStop(serviceDemoEXE);
+				ServiceHelper.TryUninstall("4.0", serviceDemoEXE);
+				ServiceHelper.Install("4.0", serviceDemoEXE);
+				ConsoleHelper.WriteLine(serviceName + " installed");
+				
+				
+				ServiceHelper.Start(serviceDemoEXE);
+				ConsoleHelper.WriteLine(serviceName + " started");
 				ConsoleHelper.ReadKey();
 				
-				results = Shell.Run(IO.System32 + @"net.exe", "START " + StringHelper.TrimEnd(serviceBuildFileName, IO.GetFileExtension(serviceBuildEXE).Length + 1));
-				ConsoleHelper.DebugWriteLine(results.Output);
-				ConsoleHelper.DebugWriteLine(ConsoleHelper.HR);
-				ConsoleHelper.ReadKey();
 				
-				results = Shell.Run(@"C:\Windows\System32\NET.exe", "STOP " + StringHelper.TrimEnd(serviceBuildFileName, IO.GetFileExtension(serviceBuildEXE).Length + 1));
-				ConsoleHelper.DebugWriteLine(results.Output);
-				ConsoleHelper.DebugWriteLine(ConsoleHelper.HR);
-				ConsoleHelper.ReadKey();
+				ServiceHelper.Stop(serviceDemoEXE);
+				ConsoleHelper.WriteLine(serviceName + " stopped");
 				
-				ConsoleHelper.WriteLine(IO.GetFilename(serviceDemoEXE) + " uninstalling");
-				results = Shell.Run(installUtil, "/u " + IO.GetFilename(serviceDemoEXE));
-				ConsoleHelper.DebugWriteLine(results.Output);
-				ConsoleHelper.DebugWriteLine(ConsoleHelper.HR);
-				ConsoleHelper.WriteLine(IO.GetFilename(serviceDemoEXE) + " uninstalled");
+				ServiceHelper.Uninstall("4.0", serviceDemoEXE);
+				ConsoleHelper.WriteLine(serviceName + " uninstalled");
 				ConsoleHelper.ReadKey();
 				#endif
-
 			}
 			catch (Exception ex)
 			{
