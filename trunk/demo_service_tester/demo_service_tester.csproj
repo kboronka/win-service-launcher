@@ -51,6 +51,10 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\demo_service\demo_service.csproj">
+      <Project>{5CE8FCB6-9EB4-4290-9E95-B2F252C12C90}</Project>
+      <Name>demo_service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\lib\skylib-source\SkyLib.csproj">
       <Project>{6018DC4A-ACD2-4A66-A4A5-1975FC28639A}</Project>
       <Name>SkyLib</Name>

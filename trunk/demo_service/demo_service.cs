@@ -21,7 +21,7 @@ using System.Diagnostics;
 using System.ServiceProcess;
 using System.Text;
 
-using skylib.Tools;
+//using skylib.Tools;
 
 namespace demo_service
 {
@@ -47,14 +47,32 @@ namespace demo_service
 		
 		protected override void OnStart(string[] args)
 		{
-			ServiceHelper.LogEvent("OnStart");
+			LogEvent("OnStart");
 			// TODO: Add start code here (if required) to start your service.
 		}
 		
 		protected override void OnStop()
 		{
-			ServiceHelper.LogEvent("OnStop");
+			LogEvent("OnStop");
 			// TODO: Add tear-down code here (if required) to stop your service.
+		}
+		
+				
+		public static void LogEvent(string message)
+		{
+			
+			DateTime dt = new DateTime();
+			dt = System.DateTime.UtcNow;
+			message = dt.ToLocalTime() + ": " + message;
+
+			//EventLog.WriteEntry(AssemblyInfo.Name, message);
+			#if DEBUG
+			EventLog.WriteEntry("demo_service", "debug: " + message);
+			#endif
+			
+			#if !DEBUG
+			EventLog.WriteEntry("demo_service", message);
+			#endif
 		}
 	}
 }

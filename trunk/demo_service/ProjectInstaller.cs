@@ -32,7 +32,7 @@ namespace demo_service
 			serviceProcessInstaller = new ServiceProcessInstaller();
 			serviceInstaller = new ServiceInstaller();
 			// Here you can set properties on serviceProcessInstaller or register event handlers
-			serviceProcessInstaller.Account = ServiceAccount.LocalService;
+			serviceProcessInstaller.Account = ServiceAccount.LocalSystem;
 			
 			serviceInstaller.ServiceName = demo_service.MyServiceName;
 			this.Installers.AddRange(new Installer[] { serviceProcessInstaller, serviceInstaller });
