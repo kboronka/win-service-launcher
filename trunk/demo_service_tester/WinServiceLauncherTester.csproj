@@ -5,11 +5,14 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>Exe</OutputType>
-    <RootNamespace>demo_service_tester</RootNamespace>
-    <AssemblyName>demo_service_tester</AssemblyName>
+    <RootNamespace>WinServiceLauncherTester</RootNamespace>
+    <AssemblyName>WinServiceLauncherTester</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <TargetFrameworkProfile />
+    <NoWin32Manifest>False</NoWin32Manifest>
+    <SignAssembly>False</SignAssembly>
+    <DelaySign>False</DelaySign>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -52,9 +55,9 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\demo_service\demo_service.csproj">
+    <ProjectReference Include="..\demo_service\WinServiceLauncher.csproj">
       <Project>{5CE8FCB6-9EB4-4290-9E95-B2F252C12C90}</Project>
-      <Name>demo_service</Name>
+      <Name>WinServiceLauncher</Name>
     </ProjectReference>
     <ProjectReference Include="..\lib\skylib-source\SkyLib.csproj">
       <Project>{6018DC4A-ACD2-4A66-A4A5-1975FC28639A}</Project>
