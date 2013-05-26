@@ -44,8 +44,8 @@
 	::copy sar\bin\%CONFIG%\sar.exe sar.exe
 	%ZIP% "win-service-lauchner v%VERSION%.zip" .\demo_service_tester\bin\Release\*.*
 	
-	svn commit -m "sar version %VERSION%"
-	svn copy %REPO%/trunk %REPO%/tags/%VERSION% -m "Tagging the %VERSION% version release of the project"
+	svn commit -m "version %VERSION%"
+	svn copy %REPO%/trunk %REPO%/tags/%VERSION% -m "version %VERSION% release"
 	svn update
 
 	echo build completed
