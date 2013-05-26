@@ -24,13 +24,13 @@ using System.Threading;
 
 using skylib.Tools;
 
-namespace demo_service
+namespace WinServiceLauncher
 {
-	public class demo_service : ServiceBase
+	public class WinServiceLauncher : ServiceBase
 	{
-		public const string MyServiceName = "demo_service";
+		public const string MyServiceName = "WinServiceLauncher";
 		
-		public demo_service()
+		public WinServiceLauncher()
 		{
 			InitializeComponent();
 		}

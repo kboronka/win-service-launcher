@@ -18,13 +18,13 @@ using System.Collections.Generic;
 using System.ServiceProcess;
 using System.Text;
 
-namespace demo_service
+namespace WinServiceLauncher
 {
 	static class Program
 	{
 		static void Main()
 		{
-			ServiceBase.Run(new ServiceBase[] { new demo_service() });
+			ServiceBase.Run(new ServiceBase[] { new WinServiceLauncher() });
 		}
 	}
 }

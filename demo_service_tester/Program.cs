@@ -19,7 +19,7 @@ using System.IO;
 
 using skylib.Tools;
 
-namespace demo_service_tester
+namespace WinServiceLauncherTester
 {
 	class Program
 	{
@@ -29,37 +29,34 @@ namespace demo_service_tester
 			{
 				ConsoleHelper.Start();
 				ConsoleHelper.ApplicationTitle();
-				
+					
 				// rename service exe file
-				string serviceBuildEXE = IO.FindFile("demo_service.exe");
-				string root = IO.GetRoot(serviceBuildEXE);
-				string serviceBuildFileName = IO.GetFilename(serviceBuildEXE);
-				string serviceName = StringHelper.TrimEnd(serviceBuildFileName, IO.GetFileExtension(serviceBuildEXE).Length + 1);
+				string serviceEXE = IO.FindFile("WinServiceLauncher.exe");
+				string serviceFilename = IO.GetFilename(serviceEXE);
+				string serviceName = StringHelper.TrimEnd(serviceFilename, IO.GetFileExtension(serviceEXE).Length + 1);
+				string serviceRoot = IO.GetRoot(serviceEXE);
+			
+				ServiceHelper.TryStop("demo_service");
+				ServiceHelper.TryUninstall("demo_service");
 				
-				string serviceDemoEXE = serviceBuildEXE;
-				//string serviceDemoEXE = root + serviceName + "_DEBUG.exe";
-				//if (File.Exists(serviceDemoEXE)) File.Delete(serviceDemoEXE);
-				//File.Copy(serviceBuildEXE, serviceDemoEXE);
-				
-				
-				ServiceHelper.TryStop(serviceDemoEXE);
-				ServiceHelper.TryUninstall("4.0", serviceDemoEXE);
-				ServiceHelper.Install("4.0", serviceDemoEXE);
+				ServiceHelper.TryStop(serviceEXE);
+				ServiceHelper.TryUninstall(serviceEXE);
+				ServiceHelper.Install("4.0", serviceEXE);
 				ConsoleHelper.WriteLine(serviceName + " installed");
 				
 				
-				ServiceHelper.Start(serviceDemoEXE);
+				ServiceHelper.Start(serviceEXE);
 				ConsoleHelper.WriteLine(serviceName + " started");
 				ConsoleHelper.Write("done - press any key to stop and uninstall the service", ConsoleColor.Yellow);
 				ConsoleHelper.ReadKey();
 				ConsoleHelper.WriteLine();
 				
 				
-				ServiceHelper.Stop(serviceDemoEXE);
+				ServiceHelper.TryStop(serviceEXE);
 				ConsoleHelper.WriteLine(serviceName + " stopped");
 				
 				
-				ServiceHelper.Uninstall("4.0", serviceDemoEXE);
+				ServiceHelper.Uninstall("4.0", serviceEXE);
 				ConsoleHelper.WriteLine(serviceName + " uninstalled");
 				ConsoleHelper.Write("done - press any key to exit", ConsoleColor.Yellow);
 				ConsoleHelper.ReadKey();
@@ -67,6 +64,8 @@ namespace demo_service_tester
 			}
 			catch (Exception ex)
 			{
+				ServiceHelper.TryStop("WinServiceLauncher");
+				ServiceHelper.TryUninstall("WinServiceLauncher");
 				ConsoleHelper.WriteException(ex);
 				ConsoleHelper.ReadKey();
 			}

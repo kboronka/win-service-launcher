@@ -19,7 +19,7 @@ using System.ComponentModel;
 using System.Configuration.Install;
 using System.ServiceProcess;
 
-namespace demo_service
+namespace WinServiceLauncher
 {
 	[RunInstaller(true)]
 	public class ProjectInstaller : Installer
@@ -35,7 +35,7 @@ namespace demo_service
 			// Here you can set properties on serviceProcessInstaller or register event handlers
 			serviceProcessInstaller.Account = ServiceAccount.LocalSystem;
 			
-			serviceInstaller.ServiceName = demo_service.MyServiceName;
+			serviceInstaller.ServiceName = WinServiceLauncher.MyServiceName;
 			serviceInstaller.StartType = ServiceStartMode.Automatic;
 			//serviceInstaller.DelayedAutoStart = true;
 			

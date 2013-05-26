@@ -9,11 +9,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("demo_service")]
-[assembly: AssemblyDescription("Demo Service")]
+[assembly: AssemblyTitle("WinServiceLauncher")]
+[assembly: AssemblyDescription("WinServiceLauncher")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("demo_service")]
+[assembly: AssemblyProduct("WinServiceLauncher")]
 [assembly: AssemblyCopyright("Copyright 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
