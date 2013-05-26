@@ -20,6 +20,7 @@ using System.Data;
 using System.Diagnostics;
 using System.ServiceProcess;
 using System.Text;
+using System.Threading;
 
 using skylib.Tools;
 
@@ -48,7 +49,8 @@ namespace demo_service
 		protected override void OnStart(string[] args)
 		{
 			ServiceHelper.LogEvent("OnStart");
-			// TODO: Add start code here (if required) to start your service.
+			Thread thread = new Thread(StartServices);
+			thread.Start();
 		}
 		
 		protected override void OnStop()
@@ -57,5 +59,10 @@ namespace demo_service
 			// TODO: Add tear-down code here (if required) to stop your service.
 		}
 		
+		private static void StartServices()
+		{
+			ConsoleHelper.Start(@"C:\Program Files\CCleaner\CCleaner64.exe", "/AUTO");
+			ConsoleHelper.Start(@"C:\Program Files (x86)\Plex\Plex Media Server\Plex Media Server.exe");
+		}
 	}
 }
