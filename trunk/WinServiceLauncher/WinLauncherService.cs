@@ -48,21 +48,75 @@ namespace WinServiceLauncher
 		
 		protected override void OnStart(string[] args)
 		{
-			ServiceHelper.LogEvent("OnStart");
+			this.Log("OnStart");
 			Thread thread = new Thread(StartServices);
 			thread.Start();
 		}
 		
 		protected override void OnStop()
 		{
-			ServiceHelper.LogEvent("OnStop");
+			this.Log("OnStop");
 			// TODO: Add tear-down code here (if required) to stop your service.
 		}
 		
-		private static void StartServices()
+		private void StartServices()
 		{
-			ConsoleHelper.Start(@"C:\Program Files\CCleaner\CCleaner64.exe", "/AUTO");
-			ConsoleHelper.Start(@"C:\Program Files (x86)\Plex\Plex Media Server\Plex Media Server.exe");
+			try
+			{
+				this.Log("ConsoleHelper.Start");
+				ConsoleHelper.Start(@"C:\Program Files\CCleaner\CCleaner64.exe", "/AUTO");
+				string filename = @"C:\Program Files (x86)\Plex\Plex Media Server\Plex Media Server.exe";
+				if (!ConsoleHelper.IsProcessRunning(IO.GetFilename(filename)))
+				{
+					this.Log("ConsoleHelper.StartAs");
+					ConsoleHelper.StartAs(filename, "", "username", "password");
+				}
+			}
+			catch (Exception ex)
+			{
+				this.Log(ex);
+			}
+		}
+		
+		private void Log(Exception ex)
+		{
+			this.Log(ex.Message);
+			this.Log(ex.StackTrace);
+		}
+		
+		private void Log(string message)
+		{
+			try
+			{
+				ServiceHelper.LogEvent(message);
+			}
+			catch
+			{
+				
+			}
+			
+			try
+			{
+				this.Logger.WriteLine(message);
+			}
+			catch
+			{
+				
+			}
+		}
+		
+		private FileLogger logger;
+		public FileLogger Logger
+		{
+			get
+			{
+				if (this.logger == null)
+				{
+					this.logger = new FileLogger("test.log");
+				}
+				
+				return this.logger;
+			}
 		}
 	}
 }
