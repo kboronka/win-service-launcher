@@ -1,12 +1,14 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 # SharpDevelop 4.3
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinServiceLauncher", "WinServiceLauncher\WinServiceLauncher.csproj", "{5CE8FCB6-9EB4-4290-9E95-B2F252C12C90}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyLib", "lib\skylib-source\SkyLib.csproj", "{6018DC4A-ACD2-4A66-A4A5-1975FC28639A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinServiceLauncherTester", "WinServiceLauncherTester\WinServiceLauncherTester.csproj", "{2B161D8F-1EB1-4BF7-83FD-15930E12D4F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinServiceLauncherSetup", "WinServiceLauncherSetup\WinServiceLauncherSetup.csproj", "{3B183D53-F427-435A-BDB8-F666BC7B37D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,5 +40,9 @@ Global
 		{5CE8FCB6-9EB4-4290-9E95-B2F252C12C90}.Debug|x86.ActiveCfg = Debug|x86
 		{5CE8FCB6-9EB4-4290-9E95-B2F252C12C90}.Release|x86.Build.0 = Release|x86
 		{5CE8FCB6-9EB4-4290-9E95-B2F252C12C90}.Release|x86.ActiveCfg = Release|x86
+		{3B183D53-F427-435A-BDB8-F666BC7B37D9}.Debug|x86.Build.0 = Debug|Any CPU
+		{3B183D53-F427-435A-BDB8-F666BC7B37D9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3B183D53-F427-435A-BDB8-F666BC7B37D9}.Release|x86.Build.0 = Release|Any CPU
+		{3B183D53-F427-435A-BDB8-F666BC7B37D9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 EndGlobal
