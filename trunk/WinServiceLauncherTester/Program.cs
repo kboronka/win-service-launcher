@@ -21,8 +21,6 @@ using sar.Tools;
 
 namespace WinServiceLauncherTester
 {
-	using sar.Tools;
-	
 	class Program
 	{
 		public static void Main(string[] args)

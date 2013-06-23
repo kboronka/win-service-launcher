@@ -48,8 +48,8 @@ namespace WinServiceLauncher
 			}
 			else
 			{
-				//serviceProcessInstaller.Account = ServiceAccount.LocalSystem;
-				serviceProcessInstaller.Account = ServiceAccount.NetworkService;
+				serviceProcessInstaller.Account = ServiceAccount.LocalSystem;
+				//serviceProcessInstaller.Account = ServiceAccount.NetworkService;
 			}
 			
 			serviceInstaller.ServiceName = WinServiceLauncher.MyServiceName;
