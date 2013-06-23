@@ -48,14 +48,14 @@ namespace WinServiceLauncher
 		
 		protected override void OnStart(string[] args)
 		{
-			this.Log("OnStart");
+			WinServiceLauncher.Log("OnStart");
 			Thread thread = new Thread(StartServices);
 			thread.Start();
 		}
 		
 		protected override void OnStop()
 		{
-			this.Log("OnStop");
+			WinServiceLauncher.Log("OnStop");
 			// TODO: Add tear-down code here (if required) to stop your service.
 		}
 		
@@ -63,28 +63,28 @@ namespace WinServiceLauncher
 		{
 			try
 			{
-				this.Log("ConsoleHelper.Start");
-				ConsoleHelper.Start(@"C:\Program Files\CCleaner\CCleaner64.exe", "/AUTO");
-				string filename = @"C:\Program Files (x86)\Plex\Plex Media Server\Plex Media Server.exe";
-				if (!ConsoleHelper.IsProcessRunning(IO.GetFilename(filename)))
+				WinServiceLauncher.Log("Environment.UserInteractive = " + Environment.UserInteractive.ToString());
+				WinServiceLauncher.Log("Username = " + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
+
+				WinServiceLauncher.Log("StartServices()");
+				foreach (Launcher app in Configuration.Launchers)
 				{
-					this.Log("ConsoleHelper.StartAs");
-					ConsoleHelper.StartAs(filename, "", "username", "password");
+					app.Launch();
 				}
 			}
 			catch (Exception ex)
 			{
-				this.Log(ex);
+				WinServiceLauncher.Log(ex);
 			}
 		}
 		
-		private void Log(Exception ex)
+		public static void Log(Exception ex)
 		{
-			this.Log(ex.Message);
-			this.Log(ex.StackTrace);
+			WinServiceLauncher.Log(ex.Message);
+			WinServiceLauncher.Log(ex.StackTrace);
 		}
 		
-		private void Log(string message)
+		public static void Log(string message)
 		{
 			try
 			{
@@ -97,7 +97,7 @@ namespace WinServiceLauncher
 			
 			try
 			{
-				this.Logger.WriteLine(message);
+				WinServiceLauncher.Logger.WriteLine(message);
 			}
 			catch
 			{
@@ -105,17 +105,17 @@ namespace WinServiceLauncher
 			}
 		}
 		
-		private FileLogger logger;
-		public FileLogger Logger
+		private static FileLogger logger;
+		public static FileLogger Logger
 		{
 			get
 			{
-				if (this.logger == null)
+				if (WinServiceLauncher.logger == null)
 				{
-					this.logger = new FileLogger("test.log");
+					WinServiceLauncher.logger = new FileLogger("test.log");
 				}
 				
-				return this.logger;
+				return WinServiceLauncher.logger;
 			}
 		}
 	}

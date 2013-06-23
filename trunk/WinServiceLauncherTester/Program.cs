@@ -35,6 +35,12 @@ namespace WinServiceLauncherTester
 				ConsoleHelper.WriteLine("Environment.UserInteractive = " + Environment.UserInteractive.ToString());
 				ConsoleHelper.WriteLine("Username = " + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
 
+				//return;
+				ConsoleHelper.KillProcess("PlexDlnaServer.exe");
+				ConsoleHelper.KillProcess("PlexScriptHost.exe");
+				ConsoleHelper.KillProcess("Plex Media Server.exe");
+				ConsoleHelper.KillProcess("PlexDlnaServer.exe");
+
 				// rename service exe file
 				string serviceEXE = IO.FindFile("WinServiceLauncher.exe");
 				string serviceFilename = IO.GetFilename(serviceEXE);
@@ -46,6 +52,10 @@ namespace WinServiceLauncherTester
 				
 				ServiceHelper.TryStop(serviceEXE);
 				ServiceHelper.TryUninstall(serviceEXE);
+				
+				//string username = ConsoleHelper.Input("Username: ");
+				//string password = ConsoleHelper.Input("Password: ");
+				
 				ServiceHelper.Install("4.0", serviceEXE);
 				ConsoleHelper.WriteLine(serviceName + " installed");
 				

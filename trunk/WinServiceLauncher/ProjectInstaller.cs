@@ -33,7 +33,24 @@ namespace WinServiceLauncher
 			serviceProcessInstaller = new ServiceProcessInstaller();
 			serviceInstaller = new ServiceInstaller();
 			// Here you can set properties on serviceProcessInstaller or register event handlers
-			serviceProcessInstaller.Account = ServiceAccount.LocalSystem;
+
+			string username = GetContextParameter("user").Trim();
+			string password = GetContextParameter("password").Trim();
+			WinServiceLauncher.Log("username = " + username);
+			WinServiceLauncher.Log("password = " + password);
+			
+			if (!String.IsNullOrEmpty(username))
+			{
+				if (username != "") serviceProcessInstaller.Username = username;
+				if (password != "") serviceProcessInstaller.Password = password;
+				
+				serviceProcessInstaller.Account = ServiceAccount.User;
+			}
+			else
+			{
+				//serviceProcessInstaller.Account = ServiceAccount.LocalSystem;
+				serviceProcessInstaller.Account = ServiceAccount.NetworkService;
+			}
 			
 			serviceInstaller.ServiceName = WinServiceLauncher.MyServiceName;
 			serviceInstaller.StartType = ServiceStartMode.Automatic;
@@ -47,6 +64,20 @@ namespace WinServiceLauncher
 			//ServiceController serviceController = new ServiceController(serviceInstaller.ServiceName);
 			//ServiceHelper.ChangeStartMode(serviceController, ServiceStartMode.Automatic);
 			//serviceController.Start();
+		}
+		
+		public string GetContextParameter(string key)
+		{
+			string sValue = "";
+			try
+			{
+				sValue = this.Context.Parameters[key].ToString();
+			}
+			catch
+			{
+				sValue = "";
+			}
+			return sValue;
 		}
 	}
 }
