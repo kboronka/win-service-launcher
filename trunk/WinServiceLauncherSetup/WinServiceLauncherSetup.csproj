@@ -59,5 +59,11 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\lib\sar-source\sar\sar.csproj">
+      <Project>{74862D71-2342-4EAE-8C29-D25F2A195677}</Project>
+      <Name>sar</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

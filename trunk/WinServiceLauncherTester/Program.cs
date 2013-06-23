@@ -17,11 +17,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-using skylib.Tools;
+using sar.Tools;
 
 namespace WinServiceLauncherTester
 {
-	using skylib.Tools;
+	using sar.Tools;
 	
 	class Program
 	{
