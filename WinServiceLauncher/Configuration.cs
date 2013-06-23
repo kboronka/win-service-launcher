@@ -14,12 +14,14 @@ using System.Text;
 using System.Xml;
 
 using sar.Tools;
+
 namespace WinServiceLauncher
 {
 	public static class Configuration
 	{
 		private static List<Launcher> launchers;
 		private static string path;
+		private static SocketServer socketServer;
 		
 		public static List<Launcher> Launchers
 		{
@@ -76,6 +78,9 @@ namespace WinServiceLauncher
 						case "Launcher":
 							Configuration.launchers.Add(new Launcher(reader));
 							break;
+						case "SocketServer":
+							socketServer = new SocketServer(reader);
+							break;
 					}
 				}
 			}
@@ -87,13 +92,15 @@ namespace WinServiceLauncher
 			writer.WriteStartElement("WinServiceLauncher");
 			writer.WriteAttributeString("version", "1.0.0.0");
 
+			if (Configuration.socketServer != null) Configuration.socketServer.Serialize(writer);
+
 			writer.WriteStartElement("Launchers");
 
 			foreach (Launcher launcher in Configuration.Launchers)
 			{
 				launcher.Serialize(writer);
 			}
-
+						
 			writer.WriteEndElement();	// Launchers
 			writer.WriteEndElement();	// WinServiceLauncher
 		}
