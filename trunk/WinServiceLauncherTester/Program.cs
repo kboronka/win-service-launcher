@@ -31,13 +31,16 @@ namespace WinServiceLauncherTester
 			{
 				ConsoleHelper.Start();
 				ConsoleHelper.ApplicationTitle();
-					
+				
+				ConsoleHelper.WriteLine("Environment.UserInteractive = " + Environment.UserInteractive.ToString());
+				ConsoleHelper.WriteLine("Username = " + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
+
 				// rename service exe file
 				string serviceEXE = IO.FindFile("WinServiceLauncher.exe");
 				string serviceFilename = IO.GetFilename(serviceEXE);
 				string serviceName = StringHelper.TrimEnd(serviceFilename, IO.GetFileExtension(serviceEXE).Length + 1);
 				string serviceRoot = IO.GetRoot(serviceEXE);
-			
+				
 				ServiceHelper.TryStop("demo_service");
 				ServiceHelper.TryUninstall("demo_service");
 				
