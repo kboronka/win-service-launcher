@@ -21,6 +21,8 @@ using skylib.Tools;
 
 namespace WinServiceLauncherTester
 {
+	using skylib.Tools;
+	
 	class Program
 	{
 		public static void Main(string[] args)
