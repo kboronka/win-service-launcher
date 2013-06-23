@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Configuration.cs" />
     <Compile Include="Launcher.cs" />
+    <Compile Include="SocketServer.cs" />
     <Compile Include="WinLauncherService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs" />
