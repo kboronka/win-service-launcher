@@ -2,11 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 # SharpDevelop 4.3
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinServiceLauncher", "demo_service\WinServiceLauncher.csproj", "{5CE8FCB6-9EB4-4290-9E95-B2F252C12C90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinServiceLauncher", "WinServiceLauncher\WinServiceLauncher.csproj", "{5CE8FCB6-9EB4-4290-9E95-B2F252C12C90}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyLib", "lib\skylib-source\SkyLib.csproj", "{6018DC4A-ACD2-4A66-A4A5-1975FC28639A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinServiceLauncherTester", "demo_service_tester\WinServiceLauncherTester.csproj", "{2B161D8F-1EB1-4BF7-83FD-15930E12D4F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinServiceLauncherTester", "WinServiceLauncherTester\WinServiceLauncherTester.csproj", "{2B161D8F-1EB1-4BF7-83FD-15930E12D4F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
