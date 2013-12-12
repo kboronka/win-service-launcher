@@ -67,7 +67,7 @@ namespace WinServiceLauncher
 				WinServiceLauncher.Log("Username = " + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
 
 				WinServiceLauncher.Log("StartServices()");
-				foreach (Launcher app in Configuration.Launchers)
+				foreach (Launcher app in Configuration.All.Launchers)
 				{
 					app.Launch();
 				}
