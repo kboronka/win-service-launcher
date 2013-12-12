@@ -17,57 +17,44 @@ using sar.Tools;
 
 namespace WinServiceLauncher
 {
-	public static class Configuration
+	public class Configuration : sar.Base.Configuration
 	{
-		private static List<Launcher> launchers;
-		private static string path;
-		private static SocketServer socketServer;
+		#region singleton
 		
-		public static List<Launcher> Launchers
+		private static Configuration all;
+		
+		public static Configuration All
 		{
 			get
 			{
-				if (launchers == null)
-				{
-					Load(ApplicationInfo.CommonDataDirectory + "WinServiceLauncher.xml");
-				}
-				
+				if (Configuration.all == null) Configuration.all = new Configuration();				
+				return Configuration.all;
+			}
+		}
+		
+		public static void Load()
+		{
+			Configuration.all = Configuration.All;
+			all.Save();
+		}
+		
+		#endregion
+		
+		private List<Launcher> launchers;
+		private SocketServer socketServer;
+		
+		public List<Launcher> Launchers
+		{
+			get
+			{
+				if (launchers == null) Configuration.Load();				
 				return launchers;
 			}
 		}
-
-		public static void Save()
-		{
-			Configuration.Save(Configuration.path);
-		}
 		
-		public static void Save(string path)
+		protected override void Deserialize(XmlReader reader)
 		{
-			Configuration.path = path;
-			XmlWriter writer = XmlWriter.Create(path, WriterSettings());
-			Configuration.Serialize(writer);
-			writer.Close();
-		}
-		
-		public static void Load(string path)
-		{
-			Configuration.path = path;
-			
-			if (!File.Exists(path))
-			{
-				Configuration.launchers = new List<Launcher>();
-			}
-			else
-			{
-				XmlReader reader = XmlReader.Create(path, ReaderSettings());
-				Configuration.Deserialize(reader);
-				reader.Close();
-			}
-		}
-		
-		private static void Deserialize(XmlReader reader)
-		{
-			Configuration.launchers = new List<Launcher>();
+			this.launchers = new List<Launcher>();
 
 			while (reader.Read())
 			{
@@ -76,7 +63,7 @@ namespace WinServiceLauncher
 					switch (reader.Name)
 					{
 						case "Launcher":
-							Configuration.launchers.Add(new Launcher(reader));
+							this.launchers.Add(new Launcher(reader));
 							break;
 						case "SocketServer":
 							socketServer = new SocketServer(reader);
@@ -86,43 +73,18 @@ namespace WinServiceLauncher
 			}
 		}
 		
-		private static void Serialize(XmlWriter writer)
+		protected override void Serialize(XmlWriter writer)
 		{
-			writer.WriteStartDocument();
-			writer.WriteStartElement("WinServiceLauncher");
-			writer.WriteAttributeString("version", "1.0.0.0");
-
-			if (Configuration.socketServer != null) Configuration.socketServer.Serialize(writer);
+			if (this.socketServer != null) this.socketServer.Serialize(writer);
 
 			writer.WriteStartElement("Launchers");
 
-			foreach (Launcher launcher in Configuration.Launchers)
+			foreach (Launcher launcher in Configuration.All.Launchers)
 			{
 				launcher.Serialize(writer);
 			}
 						
 			writer.WriteEndElement();	// Launchers
-			writer.WriteEndElement();	// WinServiceLauncher
-		}
-		
-		private static XmlReaderSettings ReaderSettings()
-		{
-			XmlReaderSettings settings = new XmlReaderSettings();
-			settings.CloseInput = true;
-			settings.IgnoreComments = true;
-			settings.IgnoreProcessingInstructions = true;
-			settings.IgnoreWhitespace = true;
-			return settings;
-		}
-
-		private static XmlWriterSettings WriterSettings()
-		{
-			XmlWriterSettings settings = new XmlWriterSettings();
-			settings.CloseOutput = true;
-			settings.Encoding = Encoding.UTF8;
-			settings.Indent = true;
-			settings.IndentChars = "\t";
-			return settings;
 		}
 	}
 }
