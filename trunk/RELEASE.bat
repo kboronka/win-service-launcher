@@ -47,7 +47,9 @@
 
 	
 :BuildComplete
-	%ZIP% "WinServiceLauncher v%VERSION%.zip" .\WinServiceLauncherInstaller\bin\%CONFIG%\*.*
+	%SAR% -f.bk ".\WinServiceLauncherInstaller\bin\%CONFIG%\*.*" ".\release"
+	%SAR% -f.bk ".\WinServiceLauncher\bin\%CONFIG%\*.*" ".\release"
+	%ZIP% "WinServiceLauncher v%VERSION%.zip" ..\release\*.*
 	
 	svn commit -m "version %VERSION%"
 	svn copy %REPO%/trunk %REPO%/tags/%VERSION% -m "version %VERSION% release"
