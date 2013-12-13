@@ -13,7 +13,7 @@
 :BuildEnvironment
 	@echo off
 	pushd "%~dp0"
-	set SOLUTION=demo_service.sln
+	set SOLUTION=WinServiceLauncher.sln
 	set REPO=https://win-service-launcher.googlecode.com/svn
 	set CONFIG=Release
 	set BASEPATH=%~dp0
@@ -27,13 +27,19 @@
 	echo "VERSION.MAJOR.MINOR.BUILD".
 	set /p VERSION="> "
 
-	del .\demo_service_tester\bin\Release\*.* /q
 	svn cleanup
 	svn update
-	%SAR% -f.bsd \demo_service_tester\*.cs "Kevin Boronka"
-	%SAR% -f.bsd \demo_service\*.cs "Kevin Boronka"
-	%SAR% -assy.ver \demo_service_tester\AssemblyInfo.* %VERSION%
-	%SAR% -assy.ver \demo_service\AssemblyInfo.* %VERSION%
+
+	%SAR% -f.d  ".\WinServiceLauncherInstaller\bin\%CONFIG%\*.*" /q /svn
+	%SAR% -f.bsd "\WinServiceLauncher\*.cs" "Kevin Boronka"
+	%SAR% -f.bsd "\WinServiceLauncherInstaller\*.cs" "Kevin Boronka"
+	%SAR% -f.bsd "\WinServiceLauncherSetup\*.cs" "Kevin Boronka"
+	%SAR% -f.bsd "\WinServiceLauncherTester\*.cs" "Kevin Boronka"
+	
+	%SAR% -assy.ver "\WinServiceLauncher\AssemblyInfo.*" %VERSION%
+	%SAR% -assy.ver "\WinServiceLauncherInstaller\AssemblyInfo.*" %VERSION%
+	%SAR% -assy.ver "\WinServiceLauncherSetup\AssemblyInfo.*" %VERSION%
+	%SAR% -assy.ver "\WinServiceLauncherTester\AssemblyInfo.*" %VERSION%
 
 	echo building binaries
 	%SAR% -b.net 4.0 %SOLUTION% /p:Configuration=%CONFIG% /p:Platform=\"x86\"
@@ -41,8 +47,7 @@
 
 	
 :BuildComplete
-	::copy sar\bin\%CONFIG%\sar.exe sar.exe
-	%ZIP% "win-service-lauchner v%VERSION%.zip" .\demo_service_tester\bin\Release\*.*
+	%ZIP% "WinServiceLauncher v%VERSION%.zip" .\WinServiceLauncherInstaller\bin\%CONFIG%\*.*
 	
 	svn commit -m "version %VERSION%"
 	svn copy %REPO%/trunk %REPO%/tags/%VERSION% -m "version %VERSION% release"
