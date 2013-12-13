@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinServiceLauncherSetup", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sar", "lib\sar-source\sar\sar.csproj", "{74862D71-2342-4EAE-8C29-D25F2A195677}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinServiceLauncherInstaller", "WinServiceLauncherInstaller\WinServiceLauncherInstaller.csproj", "{E9ED1CA3-353A-4A1F-BDF2-947178FEEF25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -40,5 +42,9 @@ Global
 		{74862D71-2342-4EAE-8C29-D25F2A195677}.Debug|x86.ActiveCfg = Debug|x86
 		{74862D71-2342-4EAE-8C29-D25F2A195677}.Release|x86.Build.0 = Release|x86
 		{74862D71-2342-4EAE-8C29-D25F2A195677}.Release|x86.ActiveCfg = Release|x86
+		{E9ED1CA3-353A-4A1F-BDF2-947178FEEF25}.Debug|x86.Build.0 = Debug|Any CPU
+		{E9ED1CA3-353A-4A1F-BDF2-947178FEEF25}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E9ED1CA3-353A-4A1F-BDF2-947178FEEF25}.Release|x86.Build.0 = Release|Any CPU
+		{E9ED1CA3-353A-4A1F-BDF2-947178FEEF25}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 EndGlobal
