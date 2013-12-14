@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.IO;
 
 using sar.Tools;
@@ -35,23 +36,24 @@ namespace WinServiceLauncherInstaller
 				string serviceName = StringHelper.TrimEnd(serviceFilename, IO.GetFileExtension(serviceEXE).Length + 1);
 				string serviceRoot = IO.GetRoot(serviceEXE);
 				
+				Progress.Message = "Stopping Service";
 				ServiceHelper.TryStop(serviceEXE);
-				ServiceHelper.TryUninstall(serviceEXE);
 				
-				
-				ServiceHelper.Install("4.0", serviceEXE);
-				ConsoleHelper.WriteLine(serviceName + " installed");
-				
-				
+				Progress.Message = "Uninstainlling Service";
+				ConsoleHelper.TryRun(serviceEXE, "-u");
+				Progress.Message = "Installing Service";
+				ConsoleHelper.TryRun(serviceEXE, "-i");
+				Progress.Message = "Starting Service";
 				ServiceHelper.Start(serviceEXE);
+				
 				ConsoleHelper.WriteLine(serviceName + " started");
 				ConsoleHelper.Write(serviceName + " should be installed and running", ConsoleColor.Yellow);
-
+				Thread.Sleep(2000);
 			}
 			catch (Exception ex)
 			{
 				ServiceHelper.TryStop("WinServiceLauncher");
-				ServiceHelper.TryUninstall("WinServiceLauncher");
+				ConsoleHelper.TryRun("WinServiceLauncher.exe", "-u");
 				ConsoleHelper.WriteException(ex);
 				ConsoleHelper.ReadKey();
 			}
