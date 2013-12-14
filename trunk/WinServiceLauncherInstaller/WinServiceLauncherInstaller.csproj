@@ -53,6 +53,10 @@
       <Project>{74862D71-2342-4EAE-8C29-D25F2A195677}</Project>
       <Name>sar</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WinServiceLauncher\WinServiceLauncher.csproj">
+      <Project>{5CE8FCB6-9EB4-4290-9E95-B2F252C12C90}</Project>
+      <Name>WinServiceLauncher</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
