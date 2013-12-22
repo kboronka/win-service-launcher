@@ -32,6 +32,7 @@ namespace WinServiceLauncher
 		private string domain;
 		private string username;
 		private string password;
+		private long interval;
 		
 		#region constructors
 		
@@ -59,7 +60,7 @@ namespace WinServiceLauncher
 			this.password = password;
 		}
 		
-		public Launcher(XmlReader reader)
+		public Launcher(XML.Reader reader)
 		{
 			this.name = reader.GetAttribute("name");
 			this.filename = reader.GetAttribute("filename");
@@ -67,6 +68,7 @@ namespace WinServiceLauncher
 			this.domain = reader.GetAttribute("domain");
 			this.username = reader.GetAttribute("username");
 			this.password = reader.GetAttribute("password");
+			this.interval = int.Parse(reader.GetAttribute("interval"));
 		}
 		
 		#endregion
@@ -88,10 +90,16 @@ namespace WinServiceLauncher
 			{
 				this.Launch();
 			}
-			catch (Exception ex)
+			catch
 			{
-				System.Diagnostics.Debug.WriteLine(ex.Message);
-				System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+
+			}
+			finally
+			{
+				if (this.interval > 0)
+				{
+					this.launchTimer.Change(this.interval, Timeout.Infinite );
+				}
 			}
 		}
 		
@@ -120,15 +128,8 @@ namespace WinServiceLauncher
 			}
 		}
 		
-		public void Serialize(XmlWriter writer)
+		public void Serialize(XML.Writer writer)
 		{
-			if (String.IsNullOrEmpty(this.name)) this.name = "";
-			if (String.IsNullOrEmpty(this.filename)) this.filename = "";
-			if (String.IsNullOrEmpty(this.arguments)) this.arguments = "";
-			if (String.IsNullOrEmpty(this.domain)) this.domain = "";
-			if (String.IsNullOrEmpty(this.username)) this.username = "";
-			if (String.IsNullOrEmpty(this.password)) this.password = "";
-			
 			writer.WriteStartElement("Launcher");
 			writer.WriteAttributeString("name", this.name);
 			writer.WriteAttributeString("filename", this.filename);
@@ -136,6 +137,7 @@ namespace WinServiceLauncher
 			writer.WriteAttributeString("domain", this.domain);
 			writer.WriteAttributeString("username", this.username);
 			writer.WriteAttributeString("password", this.password);
+			writer.WriteAttributeString("interval", this.interval.ToString());
 			writer.WriteEndElement();	// Launcher
 		}
 		
