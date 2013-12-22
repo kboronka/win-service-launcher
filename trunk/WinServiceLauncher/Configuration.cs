@@ -59,7 +59,7 @@ namespace WinServiceLauncher
 			}
 		}
 		
-		protected override void Deserialize(XmlReader reader)
+		protected override void Deserialize(XML.Reader reader)
 		{
 			this.launchers = new List<Launcher>();
 
@@ -87,7 +87,7 @@ namespace WinServiceLauncher
 			}
 		}
 		
-		protected override void Serialize(XmlWriter writer)
+		protected override void Serialize(XML.Writer writer)
 		{
 			if (this.socketServer != null) this.socketServer.Serialize(writer);
 
