@@ -63,13 +63,16 @@ namespace WinServiceLauncher
 		{
 			try
 			{
+				WinServiceLauncher.Log(ConsoleHelper.HR);
+				WinServiceLauncher.Log("StartServices()");
 				WinServiceLauncher.Log("Environment.UserInteractive = " + Environment.UserInteractive.ToString());
 				WinServiceLauncher.Log("Username = " + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
-
-				WinServiceLauncher.Log("StartServices()");
+				
+				Configuration.Load();
+				
 				foreach (Launcher app in Configuration.All.Launchers)
 				{
-					app.Launch();
+					app.LaunchAsync();
 				}
 			}
 			catch (Exception ex)

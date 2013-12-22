@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Xml;
 
 using sar.Tools;
@@ -72,6 +73,30 @@ namespace WinServiceLauncher
 		
 		#region methods
 		
+		#region Async
+		
+		public void LaunchAsync()
+		{
+			this.launchTimer = new Timer(this.LaunchTick, null, 1000, Timeout.Infinite);
+		}
+
+		private System.Threading.Timer launchTimer;
+		
+		private void LaunchTick(Object state)
+		{
+			try
+			{
+				this.Launch();
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine(ex.Message);
+				System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+			}
+		}
+		
+		#endregion
+		
 		public void Launch()
 		{
 			try
@@ -103,7 +128,7 @@ namespace WinServiceLauncher
 			if (String.IsNullOrEmpty(this.domain)) this.domain = "";
 			if (String.IsNullOrEmpty(this.username)) this.username = "";
 			if (String.IsNullOrEmpty(this.password)) this.password = "";
-						
+			
 			writer.WriteStartElement("Launcher");
 			writer.WriteAttributeString("name", this.name);
 			writer.WriteAttributeString("filename", this.filename);

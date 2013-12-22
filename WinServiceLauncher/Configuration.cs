@@ -34,7 +34,7 @@ namespace WinServiceLauncher
 		{
 			get
 			{
-				if (Configuration.all == null) Configuration.all = new Configuration();				
+				if (Configuration.all == null) Configuration.all = new Configuration();
 				return Configuration.all;
 			}
 		}
@@ -54,7 +54,7 @@ namespace WinServiceLauncher
 		{
 			get
 			{
-				if (launchers == null) Configuration.Load();				
+				if (launchers == null) Configuration.Load();
 				return launchers;
 			}
 		}
@@ -63,20 +63,27 @@ namespace WinServiceLauncher
 		{
 			this.launchers = new List<Launcher>();
 
-			while (reader.Read())
+			try
 			{
-				if (reader.NodeType == XmlNodeType.Element)
+				while (reader.Read())
 				{
-					switch (reader.Name)
+					if (reader.NodeType == XmlNodeType.Element)
 					{
-						case "Launcher":
-							this.launchers.Add(new Launcher(reader));
-							break;
-						case "SocketServer":
-							socketServer = new SocketServer(reader);
-							break;
+						switch (reader.Name)
+						{
+							case "Launcher":
+								this.launchers.Add(new Launcher(reader));
+								break;
+							case "SocketServer":
+								socketServer = new SocketServer(reader);
+								break;
+						}
 					}
 				}
+			}
+			catch
+			{
+				
 			}
 		}
 		
@@ -90,7 +97,7 @@ namespace WinServiceLauncher
 			{
 				launcher.Serialize(writer);
 			}
-						
+			
 			writer.WriteEndElement();	// Launchers
 		}
 	}
