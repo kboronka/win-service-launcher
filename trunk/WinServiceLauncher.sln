@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 # SharpDevelop 4.3
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinServiceLauncher", "WinServiceLauncher\WinServiceLauncher.csproj", "{5CE8FCB6-9EB4-4290-9E95-B2F252C12C90}"
 EndProject
