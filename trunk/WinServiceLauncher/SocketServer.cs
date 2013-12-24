@@ -29,7 +29,7 @@ namespace WinServiceLauncher
 	
 		#region constructors
 		
-		public SocketServer(XML.Reader reader): base(int.Parse(reader.GetAttribute("port")), Encoding.ASCII)
+		public SocketServer(XML.Reader reader): base(int.Parse(reader.GetAttributeString("port")), Encoding.ASCII)
 		{
 		
 		}

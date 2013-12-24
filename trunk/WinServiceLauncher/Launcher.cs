@@ -62,13 +62,13 @@ namespace WinServiceLauncher
 		
 		public Launcher(XML.Reader reader)
 		{
-			this.name = reader.GetAttribute("name");
-			this.filename = reader.GetAttribute("filename");
-			this.arguments = reader.GetAttribute("arguments");
-			this.domain = reader.GetAttribute("domain");
-			this.username = reader.GetAttribute("username");
-			this.password = reader.GetAttribute("password");
-			this.interval = int.Parse(reader.GetAttribute("interval"));
+			this.name = reader.GetAttributeString("name");
+			this.filename = reader.GetAttributeString("filename");
+			this.arguments = reader.GetAttributeString("arguments");
+			this.domain = reader.GetAttributeString("domain");
+			this.username = reader.GetAttributeString("username");
+			this.password = reader.GetAttributeString("password");
+			this.interval = reader.GetAttributeLong("interval");
 		}
 		
 		#endregion
