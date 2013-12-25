@@ -34,7 +34,12 @@ namespace WinServiceLauncher
 		{
 			get
 			{
-				if (Configuration.all == null) Configuration.all = new Configuration();
+				if (Configuration.all == null)
+				{
+					Configuration.all = new Configuration();
+					all.Save();
+				}
+				
 				return Configuration.all;
 			}
 		}
@@ -42,7 +47,6 @@ namespace WinServiceLauncher
 		public static void Load()
 		{
 			Configuration.all = Configuration.All;
-			all.Save();
 		}
 		
 		#endregion
