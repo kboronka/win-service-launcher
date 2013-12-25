@@ -81,6 +81,9 @@ namespace WinServiceLauncher
 			}
 		}
 		
+		#region logger
+		private static FileLogger logger;
+
 		public static void Log(Exception ex)
 		{
 			WinServiceLauncher.Log(ex.Message);
@@ -100,7 +103,12 @@ namespace WinServiceLauncher
 			
 			try
 			{
-				WinServiceLauncher.Logger.WriteLine(message);
+				if (WinServiceLauncher.logger == null)
+				{
+					WinServiceLauncher.logger = new FileLogger("debug.log");
+				}
+				
+				WinServiceLauncher.logger.WriteLine(message);
 			}
 			catch
 			{
@@ -108,18 +116,6 @@ namespace WinServiceLauncher
 			}
 		}
 		
-		private static FileLogger logger;
-		public static FileLogger Logger
-		{
-			get
-			{
-				if (WinServiceLauncher.logger == null)
-				{
-					WinServiceLauncher.logger = new FileLogger("test.log");
-				}
-				
-				return WinServiceLauncher.logger;
-			}
-		}
+		#endregion
 	}
 }
