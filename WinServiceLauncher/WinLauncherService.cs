@@ -56,7 +56,11 @@ namespace WinServiceLauncher
 		protected override void OnStop()
 		{
 			WinServiceLauncher.Log("OnStop");
-			// TODO: Add tear-down code here (if required) to stop your service.
+			
+			foreach (Launcher app in Configuration.All.Launchers)
+			{
+				app.Kill();
+			}
 		}
 		
 		private void StartServices()
@@ -94,15 +98,6 @@ namespace WinServiceLauncher
 		{
 			try
 			{
-				ServiceHelper.LogEvent(message);
-			}
-			catch
-			{
-				
-			}
-			
-			try
-			{
 				if (WinServiceLauncher.logger == null)
 				{
 					WinServiceLauncher.logger = new FileLogger("debug.log");
@@ -112,7 +107,14 @@ namespace WinServiceLauncher
 			}
 			catch
 			{
-				
+				try
+				{
+					ServiceHelper.LogEvent(message);
+				}
+				catch
+				{
+					
+				}
 			}
 		}
 		

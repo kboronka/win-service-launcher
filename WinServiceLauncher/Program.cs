@@ -22,6 +22,8 @@ using System.Reflection;
 using System.ServiceProcess;
 using System.Text;
 
+using sar.Tools;
+
 namespace WinServiceLauncher
 {
 	static class Program
@@ -32,14 +34,27 @@ namespace WinServiceLauncher
 			{
 				if (System.Environment.UserInteractive)
 				{
+					ConsoleHelper.ApplicationShortTitle();
+					
+					WinServiceLauncher.Log(ConsoleHelper.HR);
+					WinServiceLauncher.Log("Started from commandline");
+
 					string parameter = string.Concat(args);
 					switch (parameter)
 					{
 						case "-i":
+							WinServiceLauncher.Log("installing...");
 							ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
 							break;
 						case "-u":
+							WinServiceLauncher.Log("uninstalling...");
 							ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
+							break;
+						default:
+							WinServiceLauncher.Log("installing...");
+							ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
+							WinServiceLauncher.Log("starting...");
+							ServiceBase.Run(new ServiceBase[] { new WinServiceLauncher() });
 							break;
 					}
 				}

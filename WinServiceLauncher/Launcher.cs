@@ -27,6 +27,7 @@ namespace WinServiceLauncher
 	public class Launcher
 	{
 		private string name;
+		private string filepath;
 		private string filename;
 		private string arguments;
 		private string domain;
@@ -36,15 +37,17 @@ namespace WinServiceLauncher
 		
 		#region constructors
 		
-		public Launcher(string filename, string arguments)
+		public Launcher(string filepath, string arguments)
 		{
-			this.filename = filename;
+			this.filepath = filepath;
+			this.filename = IO.GetFilename(this.filepath);
 			this.arguments = arguments;
 		}
 
-		public Launcher(string filename, string arguments, string username, string password)
+		public Launcher(string filepath, string arguments, string username, string password)
 		{
-			this.filename = filename;
+			this.filepath = filepath;
+			this.filename = IO.GetFilename(this.filepath);
 			this.arguments = arguments;
 			this.domain = System.Environment.MachineName;
 			this.username = username;
@@ -53,7 +56,8 @@ namespace WinServiceLauncher
 		
 		public Launcher(string filename, string arguments, string domain, string username, string password)
 		{
-			this.filename = filename;
+			this.filepath = filename;
+			this.filename = IO.GetFilename(this.filepath);
 			this.arguments = arguments;
 			this.domain = domain;
 			this.username = username;
@@ -63,7 +67,8 @@ namespace WinServiceLauncher
 		public Launcher(XML.Reader reader)
 		{
 			this.name = reader.GetAttributeString("name");
-			this.filename = reader.GetAttributeString("filename");
+			this.filepath = reader.GetAttributeString("filename");
+			this.filename = IO.GetFilename(this.filepath);
 			this.arguments = reader.GetAttributeString("arguments");
 			this.domain = reader.GetAttributeString("domain");
 			this.username = reader.GetAttributeString("username");
@@ -109,15 +114,15 @@ namespace WinServiceLauncher
 		{
 			try
 			{
-				WinServiceLauncher.Log("Launching " + this.filename + this.arguments);
+				WinServiceLauncher.Log("Launching " + this.filepath + this.arguments);
 				
 				if (String.IsNullOrEmpty(domain))
 				{
-					ConsoleHelper.Start(this.filename, this.arguments);
+					ConsoleHelper.Start(this.filepath, this.arguments);
 				}
 				else
 				{
-					ConsoleHelper.StartAs(this.filename, this.arguments, this.domain, this.username, this.password);
+					ConsoleHelper.StartAs(this.filepath, this.arguments, this.domain, this.username, this.password);
 				}
 				WinServiceLauncher.Log("Launching complete");
 			}
@@ -128,11 +133,17 @@ namespace WinServiceLauncher
 			}
 		}
 		
+		public void Kill()
+		{
+			WinServiceLauncher.Log("Shutting Down " + this.filename);
+			ConsoleHelper.KillProcess(this.filename);
+		}
+		
 		public void Serialize(XML.Writer writer)
 		{
 			writer.WriteStartElement("Launcher");
 			writer.WriteAttributeString("name", this.name);
-			writer.WriteAttributeString("filename", this.filename);
+			writer.WriteAttributeString("filename", this.filepath);
 			writer.WriteAttributeString("arguments", this.arguments);
 			writer.WriteAttributeString("domain", this.domain);
 			writer.WriteAttributeString("username", this.username);
