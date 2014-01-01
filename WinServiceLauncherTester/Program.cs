@@ -45,9 +45,6 @@ namespace WinServiceLauncherTester
 				string serviceName = StringHelper.TrimEnd(serviceFilename, IO.GetFileExtension(serviceEXE).Length + 1);
 				string serviceRoot = IO.GetRoot(serviceEXE);
 				
-				ServiceHelper.TryStop("demo_service");
-				ServiceHelper.TryUninstall("demo_service");
-				
 				ServiceHelper.TryStop(serviceEXE);
 				ServiceHelper.TryUninstall(serviceEXE);
 				
