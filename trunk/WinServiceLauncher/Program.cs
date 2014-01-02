@@ -21,6 +21,7 @@ using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
 using System.Text;
+using System.Threading;
 
 using sar.Tools;
 
@@ -34,29 +35,46 @@ namespace WinServiceLauncher
 			{
 				if (System.Environment.UserInteractive)
 				{
-					ConsoleHelper.ApplicationShortTitle();
+					Progress progressBar = new Progress();
+					Thread backgroundThread = new Thread(new ThreadStart(progressBar.Enable));
 					
-					WinServiceLauncher.Log(ConsoleHelper.HR);
-					WinServiceLauncher.Log("Started from commandline");
+					ConsoleHelper.Start();
+					ConsoleHelper.ApplicationTitle();
 
-					string parameter = string.Concat(args);
-					switch (parameter)
+					try
 					{
-						case "-i":
-							WinServiceLauncher.Log("installing...");
-							ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
-							break;
-						case "-u":
-							WinServiceLauncher.Log("uninstalling...");
-							ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
-							break;
-						default:
-							WinServiceLauncher.Log("installing...");
-							ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
-							WinServiceLauncher.Log("starting...");
-							ServiceBase.Run(new ServiceBase[] { new WinServiceLauncher() });
-							break;
+						string parameter = string.Concat(args);
+						switch (parameter)
+						{
+							case "-i":
+								Progress.Message = "Installing Service";
+								ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
+								break;
+							case "-u":
+								Progress.Message = "Uninstall Service";
+								ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
+								break;
+							default:
+								Progress.Message = "Stopping Service";
+								ServiceHelper.TryStop("WinServiceLauncher");
+								Progress.Message = "Installing Service";
+								ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
+								break;
+						}
 					}
+					catch (Exception ex)
+					{
+						Progress.UpdateTimer.Enabled = false;
+						backgroundThread.Abort();
+						
+						ServiceHelper.TryStop("WinServiceLauncher");
+						ConsoleHelper.WriteException(ex);
+						ConsoleHelper.ReadKey();
+					}
+					
+					Progress.UpdateTimer.Enabled = false;
+					backgroundThread.Abort();
+					ConsoleHelper.Shutdown();
 				}
 				else
 				{
@@ -68,5 +86,23 @@ namespace WinServiceLauncher
 				
 			}
 		}
+		
+		/*
+		public static void Uninstall()
+		{
+			try
+			{
+				Progress.Message = "Stopping Service";
+				ServiceHelper.TryStop("WinServiceLauncher");
+
+				Progress.Message = "Uninstall Service";
+				ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
+			}
+			catch (Exception ex)
+			{
+				ConsoleHelper.WriteException(ex);
+			}
+		}
+		*/
 	}
 }
