@@ -61,23 +61,24 @@ namespace WinServiceLauncher
 		
 		private void ServiceInstaller_AfterInstall(object sender, InstallEventArgs e)
 		{
-			//ServiceController serviceController = new ServiceController(serviceInstaller.ServiceName);
+			ServiceController serviceController = new ServiceController(serviceInstaller.ServiceName);
 			//ServiceHelper.ChangeStartMode(serviceController, ServiceStartMode.Automatic);
-			//serviceController.Start();
+			serviceController.Start();
 		}
 		
 		public string GetContextParameter(string key)
 		{
-			string sValue = "";
+			string returnValue = "";
 			try
 			{
-				sValue = this.Context.Parameters[key].ToString();
+				returnValue = this.Context.Parameters[key].ToString();
 			}
 			catch
 			{
-				sValue = "";
+				returnValue = "";
 			}
-			return sValue;
+			
+			return returnValue;
 		}
 	}
 }
