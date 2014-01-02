@@ -32,6 +32,9 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="sar">
+      <HintPath>..\lib\sar\sar.exe</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -50,10 +53,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\lib\sar-source\sar\sar.csproj">
-      <Project>{74862D71-2342-4EAE-8C29-D25F2A195677}</Project>
-      <Name>sar</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WinServiceLauncher\WinServiceLauncher.csproj">
       <Project>{5CE8FCB6-9EB4-4290-9E95-B2F252C12C90}</Project>
       <Name>WinServiceLauncher</Name>
