@@ -21,7 +21,9 @@ namespace WinServiceLauncher
 				new Delay(this),
 				new Install(this),
 				new Uninstall(this),
-				new Run(this)
+				new Run(this),
+				new Start(this),
+				new Stop(this)
 			};
 		}
 	}
