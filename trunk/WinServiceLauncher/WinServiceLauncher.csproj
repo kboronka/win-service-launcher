@@ -67,6 +67,8 @@
     <Compile Include="CommandHub.cs" />
     <Compile Include="Commands\Install.cs" />
     <Compile Include="Commands\Run.cs" />
+    <Compile Include="Commands\Start.cs" />
+    <Compile Include="Commands\Stop.cs" />
     <Compile Include="Commands\Uninstall.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Launcher.cs" />
