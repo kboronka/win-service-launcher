@@ -64,6 +64,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandHub.cs" />
+    <Compile Include="Commands\Install.cs" />
+    <Compile Include="Commands\Run.cs" />
+    <Compile Include="Commands\Uninstall.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Launcher.cs" />
     <Compile Include="SocketServer.cs" />
@@ -74,6 +78,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

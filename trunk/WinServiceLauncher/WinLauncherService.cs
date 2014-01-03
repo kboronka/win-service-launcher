@@ -42,41 +42,40 @@ namespace WinServiceLauncher
 		
 		protected override void Dispose(bool disposing)
 		{
-			// TODO: Add cleanup code here (if required)
 			base.Dispose(disposing);
 		}
 		
 		protected override void OnStart(string[] args)
 		{
 			WinServiceLauncher.Log("OnStart");
+			WinServiceLauncher.Log(ConsoleHelper.HR);
+			WinServiceLauncher.Log("StartServices()");
+			WinServiceLauncher.Log("Environment.UserInteractive = " + Environment.UserInteractive.ToString());
+			WinServiceLauncher.Log("Username = " + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
 			Thread thread = new Thread(StartServices);
 			thread.Start();
 		}
 		
 		protected override void OnStop()
 		{
-			WinServiceLauncher.Log("OnStop");
-			
 			foreach (Launcher app in Configuration.All.Launchers)
 			{
 				app.Kill();
 			}
 		}
 		
-		private void StartServices()
+		public static void StartServices()
 		{
 			try
 			{
-				WinServiceLauncher.Log(ConsoleHelper.HR);
-				WinServiceLauncher.Log("StartServices()");
-				WinServiceLauncher.Log("Environment.UserInteractive = " + Environment.UserInteractive.ToString());
-				WinServiceLauncher.Log("Username = " + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
-				
 				Configuration.Load();
 				
-				foreach (Launcher app in Configuration.All.Launchers)
+				if (Configuration.All.Launchers != null)
 				{
-					app.LaunchAsync();
+					foreach (Launcher app in Configuration.All.Launchers)
+					{
+						app.LaunchAsync();
+					}
 				}
 			}
 			catch (Exception ex)

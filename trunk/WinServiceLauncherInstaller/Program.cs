@@ -41,6 +41,7 @@ namespace WinServiceLauncherInstaller
 				
 				Progress.Message = "Uninstainlling Service";
 				ConsoleHelper.TryRun(serviceEXE, "-u");
+				
 				Progress.Message = "Installing Service";
 				ConsoleHelper.TryRun(serviceEXE, "-i");
 				Progress.Message = "Starting Service";

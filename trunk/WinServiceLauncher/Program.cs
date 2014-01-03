@@ -33,52 +33,27 @@ namespace WinServiceLauncher
 		{
 			try
 			{
-				if (System.Environment.UserInteractive)
+				if (!System.Environment.UserInteractive)
 				{
-					Progress progressBar = new Progress();
-					Thread backgroundThread = new Thread(new ThreadStart(progressBar.Enable));
-					
-					ConsoleHelper.Start();
-					ConsoleHelper.ApplicationTitle();
-
-					try
-					{
-						string parameter = string.Concat(args);
-						switch (parameter)
-						{
-							case "-i":
-								Progress.Message = "Installing Service";
-								ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
-								break;
-							case "-u":
-								Progress.Message = "Uninstall Service";
-								ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
-								break;
-							default:
-								Progress.Message = "Stopping Service";
-								ServiceHelper.TryStop("WinServiceLauncher");
-								Progress.Message = "Installing Service";
-								ManagedInstallerClass.InstallHelper(new string[] { Assembly.GetExecutingAssembly().Location });
-								break;
-						}
-					}
-					catch (Exception ex)
-					{
-						Progress.UpdateTimer.Enabled = false;
-						backgroundThread.Abort();
-						
-						ServiceHelper.TryStop("WinServiceLauncher");
-						ConsoleHelper.WriteException(ex);
-						ConsoleHelper.ReadKey();
-					}
-					
-					Progress.UpdateTimer.Enabled = false;
-					backgroundThread.Abort();
-					ConsoleHelper.Shutdown();
+					ServiceBase.Run(new ServiceBase[] { new WinServiceLauncher() });
 				}
 				else
 				{
-					ServiceBase.Run(new ServiceBase[] { new WinServiceLauncher() });
+					try
+					{
+						CommandHub hub = new CommandHub();
+						ConsoleHelper.Start();
+						ConsoleHelper.ApplicationShortTitle();
+						hub.ProcessCommands(args);
+					}
+					catch (Exception ex)
+					{
+						ConsoleHelper.WriteException(ex);
+
+					}
+					
+					ConsoleHelper.Shutdown();
+					return;
 				}
 			}
 			catch
@@ -103,6 +78,6 @@ namespace WinServiceLauncher
 				ConsoleHelper.WriteException(ex);
 			}
 		}
-		*/
+		 */
 	}
 }
