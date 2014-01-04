@@ -12,7 +12,7 @@ namespace WinServiceLauncher.Launchers
 		{
 		}
 		
-		public OnStartup(XML.Reader reader) : base(reader)
+		public OnStartup(Launcher parent, XML.Reader reader) : base(parent, reader)
 		{
 		}	
 

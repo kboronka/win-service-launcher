@@ -10,12 +10,12 @@ namespace WinServiceLauncher.Launchers
 	{
 		private long interval;		//ms
 		
-		public OnInterval(long interval) : base()
+		public OnInterval(Launcher parent, long interval) : base(parent)
 		{
 			this.interval = interval;
 		}
 		
-		public OnInterval(XML.Reader reader) : base(reader)
+		public OnInterval(Launcher parent, XML.Reader reader) : base(parent, reader)
 		{
 			this.interval = reader.GetAttributeLong("interval");
 		}

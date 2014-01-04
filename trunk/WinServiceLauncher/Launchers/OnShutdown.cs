@@ -11,7 +11,7 @@ namespace WinServiceLauncher.Launchers
 		{
 		}
 		
-		public OnShutdown(XML.Reader reader) : base(reader)
+		public OnShutdown(Launcher parent, XML.Reader reader) : base(parent, reader)
 		{
 		}
 
