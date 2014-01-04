@@ -86,24 +86,54 @@ namespace WinServiceLauncher
 		}
 		
 		#region logger
-		private static FileLogger logger;
+		private static FileLogger debugLog;
+		private static FileLogger errorLog;
 
+		public static FileLogger ErrorLog
+		{
+			get
+			{
+				if (WinServiceLauncher.errorLog == null)
+				{
+					WinServiceLauncher.errorLog = new FileLogger("error.log");
+				}
+				
+				return WinServiceLauncher.errorLog;
+			}
+		}
+		
+		public static FileLogger DebugLog
+		{
+			get
+			{
+				if (WinServiceLauncher.debugLog == null)
+				{
+					WinServiceLauncher.debugLog = new FileLogger("debug.log");
+				}
+				
+				return WinServiceLauncher.debugLog;
+			}
+		}
+		
 		public static void Log(Exception ex)
 		{
-			WinServiceLauncher.Log(ex.Message);
-			WinServiceLauncher.Log(ex.StackTrace);
+			try
+			{
+				WinServiceLauncher.DebugLog.WriteLine("Error: " + ex.Message);
+				WinServiceLauncher.ErrorLog.WriteLine(ex.Message);
+				WinServiceLauncher.ErrorLog.WriteLine(ex.StackTrace);
+			}
+			catch
+			{
+				
+			}
 		}
 		
 		public static void Log(string message)
 		{
 			try
 			{
-				if (WinServiceLauncher.logger == null)
-				{
-					WinServiceLauncher.logger = new FileLogger("debug.log");
-				}
-				
-				WinServiceLauncher.logger.WriteLine(message);
+				WinServiceLauncher.DebugLog.WriteLine(message);
 			}
 			catch
 			{
