@@ -36,8 +36,8 @@ namespace WinServiceLauncher
 
 			string username = GetContextParameter("user").Trim();
 			string password = GetContextParameter("password").Trim();
-			WinServiceLauncher.Log("username = " + username);
-			WinServiceLauncher.Log("password = " + password);
+			Program.Log("username = " + username);
+			Program.Log("password = " + password);
 			
 			if (!String.IsNullOrEmpty(username))
 			{

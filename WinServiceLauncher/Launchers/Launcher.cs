@@ -156,7 +156,7 @@ namespace WinServiceLauncher.Launchers
 				schedule.StopAsync();
 			}
 			
-			WinServiceLauncher.Log("Shutting Down " + this.filename);
+			Program.Log("Shutting Down " + this.filename);
 			ConsoleHelper.KillProcess(this.filename);
 		}
 		
