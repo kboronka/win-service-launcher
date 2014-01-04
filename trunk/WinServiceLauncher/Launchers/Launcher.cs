@@ -37,6 +37,38 @@ namespace WinServiceLauncher.Launchers
 
 		private List<Schedule> schedules;
 		
+		#region properties
+
+		public string Name {
+			get { return name; }
+		}
+
+		public string Filepath {
+			get { return filepath; }
+		}
+
+		public string Filename {
+			get { return filename; }
+		}
+
+		public string Arguments {
+			get { return arguments; }
+		}
+
+		public string Domain {
+			get { return domain; }
+		}
+
+		public string Username {
+			get { return username; }
+		}
+
+		public string Password {
+			get { return password; }
+		}
+		
+		#endregion
+		
 		#region constructors
 		
 		public Launcher(string filepath, string arguments)
@@ -92,10 +124,10 @@ namespace WinServiceLauncher.Launchers
 							break;
 						case "OnStartup":
 							this.schedules.Add(new OnStartup(reader));
-							break;	
+							break;
 						case "OnShutdown":
 							this.schedules.Add(new OnShutdown(reader));
-							break;							
+							break;
 					}
 				}
 			}
@@ -110,7 +142,6 @@ namespace WinServiceLauncher.Launchers
 			foreach (Schedule schedule in schedules)
 			{
 				schedule.StartAsync();
-				schedule.LaunchAsync();
 			}
 		}
 		
@@ -118,7 +149,7 @@ namespace WinServiceLauncher.Launchers
 		{
 			foreach (Schedule schedule in schedules)
 			{
-				schedule.Stop();
+				schedule.StopAsync();
 			}
 			
 			WinServiceLauncher.Log("Shutting Down " + this.filename);

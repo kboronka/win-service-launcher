@@ -1,12 +1,6 @@
-﻿/*
- * Created by SharpDevelop.
- * User: Boronka
- * Date: 1/3/2014
- * Time: 12:28 AM
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
+﻿
 using System;
+using System.Threading;
 
 using sar.Tools;
 
@@ -16,17 +10,17 @@ namespace WinServiceLauncher.Launchers
 	{
 		private long interval;		//ms
 		
-		public OnInterval(long interval)
+		public OnInterval(long interval) : base()
 		{
 			this.interval = interval;
 		}
 		
-		public OnInterval(XML.Reader reader)
+		public OnInterval(XML.Reader reader) : base(reader)
 		{
 			this.interval = reader.GetAttributeLong("interval");
 		}
 		
-		protected void LaunchTick(Object state)
+		protected override void LaunchTick(Object state)
 		{
 			lock (this.launchTimer)
 			{

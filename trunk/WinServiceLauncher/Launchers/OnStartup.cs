@@ -1,19 +1,27 @@
-﻿/*
- * Created by SharpDevelop.
- * User: Boronka
- * Date: 1/3/2014
- * Time: 12:29 AM
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
+﻿
 using System;
+using System.Threading;
+
+using sar.Tools;
 
 namespace WinServiceLauncher.Launchers
 {
 	public class OnStartup : Schedule
 	{
-		public OnStartup()
+		public OnStartup(Launcher parent) : base(parent)
 		{
 		}
+		
+		public OnStartup(XML.Reader reader) : base(reader)
+		{
+		}	
+
+		protected override void LaunchTick(Object state)
+		{
+			lock (this.launchTimer)
+			{
+				// do nothing
+			}
+		}		
 	}
 }
