@@ -22,7 +22,7 @@ using System.Xml;
 
 using sar.Tools;
 
-namespace WinServiceLauncher
+namespace WinServiceLauncher.Launchers
 {
 	public class Launcher
 	{
@@ -34,6 +34,8 @@ namespace WinServiceLauncher
 		private string username;
 		private string password;
 		private long interval;
+
+		private List<Schedule> schedules;
 		
 		#region constructors
 		
@@ -74,67 +76,51 @@ namespace WinServiceLauncher
 			this.username = reader.GetAttributeString("username");
 			this.password = reader.GetAttributeString("password");
 			this.interval = reader.GetAttributeLong("interval");
+			
+			while (reader.Read())
+			{
+				if (reader.NodeType == XmlNodeType.Element)
+				{
+					// TODO: handled </Laucher>
+					switch (reader.Name)
+					{
+						case "OnInterval":
+							this.schedules.Add(new OnInterval(reader));
+							break;
+						case "OnTimeOfDay":
+							this.schedules.Add(new OnTimeOfDay(reader));
+							break;
+						case "OnStartup":
+							this.schedules.Add(new OnStartup(reader));
+							break;	
+						case "OnShutdown":
+							this.schedules.Add(new OnShutdown(reader));
+							break;							
+					}
+				}
+			}
 		}
 		
 		#endregion
 		
 		#region methods
 		
-		#region Async
-		
-		public void LaunchAsync()
+		public void Start()
 		{
-			this.launchTimer = new Timer(this.LaunchTick, null, 1000, Timeout.Infinite);
-		}
-
-		private System.Threading.Timer launchTimer;
-		
-		private void LaunchTick(Object state)
-		{
-			try
+			foreach (Schedule schedule in schedules)
 			{
-				this.Launch();
-			}
-			catch
-			{
-
-			}
-			finally
-			{
-				if (this.interval > 0)
-				{
-					this.launchTimer.Change(this.interval, Timeout.Infinite );
-				}
-			}
-		}
-		
-		#endregion
-		
-		public void Launch()
-		{
-			try
-			{
-				WinServiceLauncher.Log("Launching " + this.filepath + this.arguments);
-				
-				if (String.IsNullOrEmpty(domain))
-				{
-					ConsoleHelper.Start(this.filepath, this.arguments);
-				}
-				else
-				{
-					ConsoleHelper.StartAs(this.filepath, this.arguments, this.domain, this.username, this.password);
-				}
-				WinServiceLauncher.Log("Launching complete");
-			}
-			catch (Exception ex)
-			{
-				WinServiceLauncher.Log("Launching failed");
-				WinServiceLauncher.Log(ex);
+				schedule.StartAsync();
+				schedule.LaunchAsync();
 			}
 		}
 		
 		public void Kill()
 		{
+			foreach (Schedule schedule in schedules)
+			{
+				schedule.Stop();
+			}
+			
 			WinServiceLauncher.Log("Shutting Down " + this.filename);
 			ConsoleHelper.KillProcess(this.filename);
 		}
