@@ -109,6 +109,10 @@ namespace WinServiceLauncher.Launchers
 			this.password = reader.GetAttributeString("password");
 			this.interval = reader.GetAttributeLong("interval");
 			
+			
+			return;
+			
+			// code is incomplete
 			while (reader.Read())
 			{
 				if (reader.NodeType == XmlNodeType.Element)
@@ -117,16 +121,16 @@ namespace WinServiceLauncher.Launchers
 					switch (reader.Name)
 					{
 						case "OnInterval":
-							this.schedules.Add(new OnInterval(reader));
+							this.schedules.Add(new OnInterval(this, reader));
 							break;
 						case "OnTimeOfDay":
-							this.schedules.Add(new OnTimeOfDay(reader));
+							this.schedules.Add(new OnTimeOfDay(this, reader));
 							break;
 						case "OnStartup":
-							this.schedules.Add(new OnStartup(reader));
+							this.schedules.Add(new OnStartup(this, reader));
 							break;
 						case "OnShutdown":
-							this.schedules.Add(new OnShutdown(reader));
+							this.schedules.Add(new OnShutdown(this, reader));
 							break;
 					}
 				}
