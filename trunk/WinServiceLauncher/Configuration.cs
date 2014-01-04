@@ -21,6 +21,7 @@ using System.Text;
 using System.Xml;
 
 using sar.Tools;
+using WinServiceLauncher.Launchers;
 
 namespace WinServiceLauncher
 {

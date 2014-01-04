@@ -23,6 +23,7 @@ using System.Text;
 using System.Threading;
 
 using sar.Tools;
+using WinServiceLauncher.Launchers;
 
 namespace WinServiceLauncher
 {
@@ -74,7 +75,7 @@ namespace WinServiceLauncher
 				{
 					foreach (Launcher app in Configuration.All.Launchers)
 					{
-						app.LaunchAsync();
+						app.Start();
 					}
 				}
 			}

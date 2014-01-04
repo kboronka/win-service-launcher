@@ -71,7 +71,13 @@
     <Compile Include="Commands\Stop.cs" />
     <Compile Include="Commands\Uninstall.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="Launcher.cs" />
+    <Compile Include="Launchers\History.cs" />
+    <Compile Include="Launchers\OnInterval.cs" />
+    <Compile Include="Launchers\Launcher.cs" />
+    <Compile Include="Launchers\OnShutdown.cs" />
+    <Compile Include="Launchers\OnStartup.cs" />
+    <Compile Include="Launchers\OnTimeOfDay.cs" />
+    <Compile Include="Launchers\Schedule.cs" />
     <Compile Include="SocketServer.cs" />
     <Compile Include="WinLauncherService.cs" />
     <Compile Include="Program.cs" />
@@ -83,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commands" />
+    <Folder Include="Launchers" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

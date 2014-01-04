@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 using sar.Tools;
 
@@ -25,6 +26,9 @@ namespace WinServiceLauncherTester
 	{
 		public static void Main(string[] args)
 		{
+			Progress progressBar = new Progress();
+			Thread backgroundThread = new Thread(new ThreadStart(progressBar.Enable));
+			
 			try
 			{
 				ConsoleHelper.Start();
@@ -74,12 +78,17 @@ namespace WinServiceLauncherTester
 			}
 			catch (Exception ex)
 			{
+				Progress.UpdateTimer.Enabled = false;
+				backgroundThread.Abort();
+
 				ServiceHelper.TryStop("WinServiceLauncher");
 				ServiceHelper.TryUninstall("WinServiceLauncher");
 				ConsoleHelper.WriteException(ex);
 				ConsoleHelper.ReadKey();
 			}
 
+			Progress.UpdateTimer.Enabled = false;
+			backgroundThread.Abort();
 			ConsoleHelper.Shutdown();
 		}
 	}
