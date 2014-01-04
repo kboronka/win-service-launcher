@@ -48,11 +48,11 @@ namespace WinServiceLauncher
 		
 		protected override void OnStart(string[] args)
 		{
-			WinServiceLauncher.Log("OnStart");
-			WinServiceLauncher.Log(ConsoleHelper.HR);
-			WinServiceLauncher.Log("StartServices()");
-			WinServiceLauncher.Log("Environment.UserInteractive = " + Environment.UserInteractive.ToString());
-			WinServiceLauncher.Log("Username = " + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
+			Program.Log("OnStart");
+			Program.Log(ConsoleHelper.HR);
+			Program.Log("StartServices()");
+			Program.Log("Environment.UserInteractive = " + Environment.UserInteractive.ToString());
+			Program.Log("Username = " + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
 			Thread thread = new Thread(StartServices);
 			thread.Start();
 		}
@@ -81,73 +81,8 @@ namespace WinServiceLauncher
 			}
 			catch (Exception ex)
 			{
-				WinServiceLauncher.Log(ex);
+				Program.Log(ex);
 			}
-		}
-		
-		#region logger
-		private static FileLogger debugLog;
-		private static FileLogger errorLog;
-
-		public static FileLogger ErrorLog
-		{
-			get
-			{
-				if (WinServiceLauncher.errorLog == null)
-				{
-					WinServiceLauncher.errorLog = new FileLogger("error.log");
-				}
-				
-				return WinServiceLauncher.errorLog;
-			}
-		}
-		
-		public static FileLogger DebugLog
-		{
-			get
-			{
-				if (WinServiceLauncher.debugLog == null)
-				{
-					WinServiceLauncher.debugLog = new FileLogger("debug.log");
-				}
-				
-				return WinServiceLauncher.debugLog;
-			}
-		}
-		
-		public static void Log(Exception ex)
-		{
-			try
-			{
-				WinServiceLauncher.DebugLog.WriteLine("Error: " + ex.Message);
-				WinServiceLauncher.ErrorLog.WriteLine(ex.Message);
-				WinServiceLauncher.ErrorLog.WriteLine(ex.StackTrace);
-			}
-			catch
-			{
-				
-			}
-		}
-		
-		public static void Log(string message)
-		{
-			try
-			{
-				WinServiceLauncher.DebugLog.WriteLine(message);
-			}
-			catch
-			{
-				try
-				{
-					ServiceHelper.LogEvent(message);
-				}
-				catch
-				{
-					
-				}
-			}
-		}
-		
-		#endregion
+		}		
 	}
 }

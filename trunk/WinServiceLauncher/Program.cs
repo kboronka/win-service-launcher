@@ -23,11 +23,12 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 
+using sar.Base;
 using sar.Tools;
 
 namespace WinServiceLauncher
 {
-	static class Program
+	internal sealed class Program : sar.Base.Program
 	{
 		static void Main(string[] args)
 		{

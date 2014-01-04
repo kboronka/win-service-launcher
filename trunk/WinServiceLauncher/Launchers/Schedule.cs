@@ -64,7 +64,7 @@ namespace WinServiceLauncher.Launchers
 		{
 			try
 			{
-				WinServiceLauncher.Log("Launching " + this.parent.Filename + this.parent.Arguments);
+				Program.Log("Launching " + this.parent.Filename + this.parent.Arguments);
 				
 				if (String.IsNullOrEmpty(this.parent.Domain))
 				{
@@ -75,12 +75,12 @@ namespace WinServiceLauncher.Launchers
 					ConsoleHelper.StartAs(this.parent.Filepath, this.parent.Arguments, this.parent.Domain, this.parent.Username, this.parent.Password);
 				}
 				
-				WinServiceLauncher.Log("Launching complete");
+				Program.Log("Launching complete");
 			}
 			catch (Exception ex)
 			{
-				WinServiceLauncher.Log("Launching failed");
-				WinServiceLauncher.Log(ex);
+				Program.Log("Launching failed");
+				Program.Log(ex);
 			}
 		}
 		
