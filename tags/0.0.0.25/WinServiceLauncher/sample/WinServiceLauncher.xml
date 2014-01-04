@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WinServiceLauncher version="1.0.0.0">
+	<SocketServer port="8111" />
+	<Launchers>
+		<Launcher name="" filename="sample" arguments="/AUTO" domain="CA01A1694" username="user" password="pw" />
+	</Launchers>
+</WinServiceLauncher>
