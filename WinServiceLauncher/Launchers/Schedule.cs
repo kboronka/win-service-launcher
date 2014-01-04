@@ -1,24 +1,27 @@
-﻿/*
- * Created by SharpDevelop.
- * User: Boronka
- * Date: 1/3/2014
- * Time: 12:28 AM
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
+﻿using System;
+using System.Threading;
+
+using sar.Tools;
 
 namespace WinServiceLauncher.Launchers
 {
 	public abstract class Schedule
 	{
+		protected Launcher parent;
 		protected DateTime lastRun;
 		protected int loopRate = 100;
 		
-		public Schedule()
+		public Schedule(Launcher parent)
 		{
+			this.parent = parent;
 		}
-			
+		
+		public Schedule(Launcher parent, XML.Reader reader)
+		{
+			this.parent = parent;
+			this.lastRun = reader.GetAttributeTimestamp("lastrun");
+		}
+		
 		#region Async
 		
 		protected System.Threading.Timer launchTimer;
@@ -46,16 +49,17 @@ namespace WinServiceLauncher.Launchers
 		{
 			try
 			{
-				WinServiceLauncher.Log("Launching " + this.filepath + this.arguments);
+				WinServiceLauncher.Log("Launching " + this.parent.Filename + this.parent.Arguments);
 				
-				if (String.IsNullOrEmpty(domain))
+				if (String.IsNullOrEmpty(this.parent.Domain))
 				{
-					ConsoleHelper.Start(this.filepath, this.arguments);
+					ConsoleHelper.Start(this.parent.Filepath, this.parent.Arguments);
 				}
 				else
 				{
-					ConsoleHelper.StartAs(this.filepath, this.arguments, this.domain, this.username, this.password);
+					ConsoleHelper.StartAs(this.parent.Filepath, this.parent.Arguments, this.parent.Domain, this.parent.Username, this.parent.Password);
 				}
+				
 				WinServiceLauncher.Log("Launching complete");
 			}
 			catch (Exception ex)
