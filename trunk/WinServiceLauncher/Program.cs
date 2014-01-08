@@ -62,23 +62,5 @@ namespace WinServiceLauncher
 				
 			}
 		}
-		
-		/*
-		public static void Uninstall()
-		{
-			try
-			{
-				Progress.Message = "Stopping Service";
-				ServiceHelper.TryStop("WinServiceLauncher");
-
-				Progress.Message = "Uninstall Service";
-				ManagedInstallerClass.InstallHelper(new string[] { "/u", Assembly.GetExecutingAssembly().Location });
-			}
-			catch (Exception ex)
-			{
-				ConsoleHelper.WriteException(ex);
-			}
-		}
-		 */
 	}
 }
