@@ -47,7 +47,6 @@
 
 	
 :BuildComplete
-	%SAR% -f.bk ".\WinServiceLauncherInstaller\bin\%CONFIG%\*.*" ".\release"
 	%SAR% -f.bk ".\WinServiceLauncher\bin\%CONFIG%\*.*" ".\release"
 	%ZIP% "WinServiceLauncher v%VERSION%.zip" ".\release\*.*"
 	
