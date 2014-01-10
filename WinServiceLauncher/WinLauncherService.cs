@@ -48,8 +48,6 @@ namespace WinServiceLauncher
 		
 		protected override void OnStart(string[] args)
 		{
-			Program.LogInfo();
-			Program.Log(ConsoleHelper.HR);
 			Thread thread = new Thread(StartServices);
 			thread.Start();
 		}
