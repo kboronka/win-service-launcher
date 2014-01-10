@@ -34,29 +34,19 @@ namespace WinServiceLauncher.Launchers
 			this.interval = reader.GetAttributeLong("interval");
 		}
 		
-		protected override void LaunchTick(Object state)
+		protected override void ServiceLauncher()
 		{
-			lock (this.launchTimer)
+			if (DateTime.Now > this.lastRun.AddMilliseconds(this.interval))
 			{
-				try
-				{
-					if (DateTime.Now > this.lastRun.AddMilliseconds(this.interval))
-					{
-						this.Launch();
-					}
-				}
-				catch
-				{
-
-				}
-				finally
-				{
-					if (this.interval > 0)
-					{
-						this.launchTimer.Change(this.interval, Timeout.Infinite);
-					}
-				}
+				this.Launch();
 			}
+		}
+		
+		internal override void Serialize(XML.Writer writer)
+		{
+			writer.WriteStartElement("OnInterval");
+			writer.WriteAttributeString("interval", this.interval);
+			writer.WriteEndElement();	// OnInterval
 		}
 	}
 }

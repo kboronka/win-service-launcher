@@ -48,11 +48,8 @@ namespace WinServiceLauncher
 		
 		protected override void OnStart(string[] args)
 		{
-			Program.Log("OnStart");
+			Program.LogInfo();
 			Program.Log(ConsoleHelper.HR);
-			Program.Log("StartServices()");
-			Program.Log("Environment.UserInteractive = " + Environment.UserInteractive.ToString());
-			Program.Log("Username = " + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
 			Thread thread = new Thread(StartServices);
 			thread.Start();
 		}

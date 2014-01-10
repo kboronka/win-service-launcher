@@ -113,9 +113,6 @@ namespace WinServiceLauncher.Launchers
 			this.interval = reader.GetAttributeLong("interval");
 			this.schedules = new List<Schedule>();
 			
-			return;
-			
-			// code is incomplete
 			while (reader.Read())
 			{
 				if (reader.NodeType == XmlNodeType.Element)
@@ -173,6 +170,12 @@ namespace WinServiceLauncher.Launchers
 			writer.WriteAttributeString("username", this.username);
 			writer.WriteAttributeString("password", this.password);
 			writer.WriteAttributeString("interval", this.interval.ToString());
+			
+			foreach (Schedule schedule in this.schedules)
+			{
+				schedule.Serialize(writer);
+			}
+			
 			writer.WriteEndElement();	// Launcher
 		}
 		
