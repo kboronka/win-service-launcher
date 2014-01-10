@@ -32,14 +32,10 @@
 	%SAR% -kill "WinServiceLauncher.exe"
 	%SAR% -f.d  ".\WinServiceLauncherInstaller\bin\%CONFIG%\*.*" /q /svn
 	%SAR% -f.bsd "\WinServiceLauncher\*.cs" "Kevin Boronka"
-	%SAR% -f.bsd "\WinServiceLauncherInstaller\*.cs" "Kevin Boronka"
 	%SAR% -f.bsd "\WinServiceLauncherSetup\*.cs" "Kevin Boronka"
-	%SAR% -f.bsd "\WinServiceLauncherTester\*.cs" "Kevin Boronka"
 	
 	%SAR% -assy.ver "\WinServiceLauncher\AssemblyInfo.*" %VERSION%
-	%SAR% -assy.ver "\WinServiceLauncherInstaller\AssemblyInfo.*" %VERSION%
 	%SAR% -assy.ver "\WinServiceLauncherSetup\AssemblyInfo.*" %VERSION%
-	%SAR% -assy.ver "\WinServiceLauncherTester\AssemblyInfo.*" %VERSION%
 
 	echo building binaries
 	%SAR% -b.net 4.0 %SOLUTION% /p:Configuration=%CONFIG% /p:Platform=\"x86\"
