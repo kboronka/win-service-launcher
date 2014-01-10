@@ -76,6 +76,7 @@ namespace WinServiceLauncher.Launchers
 			this.filepath = filepath;
 			this.filename = IO.GetFilename(this.filepath);
 			this.arguments = arguments;
+			this.schedules = new List<Schedule>();
 		}
 
 		public Launcher(string filepath, string arguments, string username, string password)
@@ -86,6 +87,7 @@ namespace WinServiceLauncher.Launchers
 			this.domain = System.Environment.MachineName;
 			this.username = username;
 			this.password = password;
+			this.schedules = new List<Schedule>();
 		}
 		
 		public Launcher(string filename, string arguments, string domain, string username, string password)
@@ -96,6 +98,7 @@ namespace WinServiceLauncher.Launchers
 			this.domain = domain;
 			this.username = username;
 			this.password = password;
+			this.schedules = new List<Schedule>();
 		}
 		
 		public Launcher(XML.Reader reader)
@@ -108,7 +111,7 @@ namespace WinServiceLauncher.Launchers
 			this.username = reader.GetAttributeString("username");
 			this.password = reader.GetAttributeString("password");
 			this.interval = reader.GetAttributeLong("interval");
-			
+			this.schedules = new List<Schedule>();
 			
 			return;
 			
