@@ -113,7 +113,7 @@ namespace WinServiceLauncher.Launchers
 			this.interval = reader.GetAttributeLong("interval");
 			this.schedules = new List<Schedule>();
 			
-			while (reader.Read())
+			while (reader.Read() && (reader.NodeType != XmlNodeType.EndElement))
 			{
 				if (reader.NodeType == XmlNodeType.Element)
 				{
