@@ -33,6 +33,7 @@ namespace WinServiceLauncher.Commands
 		                                              new List<string> { "-r" })
 		{
 		}
+		
 		public override int Execute(string[] args)
 		{
 			// sanity check
@@ -41,7 +42,8 @@ namespace WinServiceLauncher.Commands
 				throw new ArgumentException("incorrect number of arguments");
 			}
 			
-			Progress.Message = "Service running in console mode";
+			Program.Log("Engine Running in Console Mode");
+			Progress.Message = "Engine Running in Console Mode";
 			Thread thread = new Thread(WinServiceLauncher.StartServices);
 			thread.Start();
 			

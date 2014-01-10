@@ -22,20 +22,33 @@ namespace WinServiceLauncher.Launchers
 {
 	public class OnStartup : Schedule
 	{
+		private bool launchComplete;
+		
 		public OnStartup(Launcher parent) : base(parent)
 		{
 		}
 		
 		public OnStartup(Launcher parent, XML.Reader reader) : base(parent, reader)
 		{
-		}	
+		}
 
-		protected override void LaunchTick(Object state)
+		protected override void ServiceLauncher()
 		{
-			lock (this.launchTimer)
+			if (!launchComplete)
 			{
-				// do nothing
+				this.Launch();
+				launchComplete = true;
 			}
-		}		
+			else
+			{
+				Thread.Sleep(200);
+			}
+		}
+
+		internal override void Serialize(XML.Writer writer)
+		{
+			writer.WriteStartElement("OnStartup");
+			writer.WriteEndElement();	// OnStartup
+		}
 	}
 }

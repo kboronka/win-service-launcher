@@ -37,34 +37,69 @@ namespace WinServiceLauncher.Launchers
 			this.lastRun = reader.GetAttributeTimestamp("lastrun");
 		}
 		
+		internal abstract void Serialize(XML.Writer writer);
+		
 		#region Async
 		
-		protected System.Threading.Timer launchTimer;
+		private Thread launchLoopThread;
+		private bool launchLoopShutdown;
 
 		public void StartAsync()
 		{
-			lock (this.launchTimer)
+			try
 			{
-				this.launchTimer = new Timer(this.LaunchTick, null, 5000, Timeout.Infinite);
+				this.launchLoopThread = new Thread(this.LaunchLoop);
+				this.launchLoopThread.Start();
+			}
+			catch (Exception ex)
+			{
+				Program.Log(ex);
 			}
 		}
 		
 		public void StopAsync()
 		{
-			lock (this.launchTimer)
+			try
 			{
-				this.launchTimer.Dispose();
-				this.launchTimer = null;
+				this.launchLoopShutdown = true;
+				this.launchLoopThread.Join();
+			}
+			catch (Exception ex)
+			{
+				Program.Log(ex);
 			}
 		}
-
-		protected abstract void LaunchTick(Object state);
+		
+		private void LaunchLoop()
+		{
+			Thread.Sleep(250);
+			Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Loop Started");
+			
+			while (!launchLoopShutdown)
+			{
+				try
+				{				
+					this.ServiceLauncher();
+					Thread.Sleep(100);
+				}
+				catch (Exception ex)
+				{
+					Program.Log(ex);
+					Thread.Sleep(1000);
+				}
+			}
+			
+			Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Loop Shutdown Gracefully");
+		}
+		
+		protected abstract void ServiceLauncher();
 		
 		public void Launch()
 		{
 			try
 			{
-				Program.Log("Launching " + this.parent.Filename + this.parent.Arguments);
+				
+				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching " + this.parent.Filename + this.parent.Arguments);
 				
 				if (String.IsNullOrEmpty(this.parent.Domain))
 				{
@@ -75,11 +110,12 @@ namespace WinServiceLauncher.Launchers
 					ConsoleHelper.StartAs(this.parent.Filepath, this.parent.Arguments, this.parent.Domain, this.parent.Username, this.parent.Password);
 				}
 				
-				Program.Log("Launching complete");
+				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching complete");
+				this.lastRun = DateTime.Now;
 			}
 			catch (Exception ex)
 			{
-				Program.Log("Launching failed");
+				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching failed");
 				Program.Log(ex);
 			}
 		}

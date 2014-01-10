@@ -33,32 +33,19 @@ namespace WinServiceLauncher.Launchers
 			time = reader.GetAttributeTimeSpan("time");
 		}
 
-		protected override void LaunchTick(Object state)
+		protected override void ServiceLauncher()
 		{
-			lock (this.launchTimer)
+			if (this.lastRun.TimeOfDay < this.time  && DateTime.Now.TimeOfDay >= this.time)
 			{
-				try
-				{
-					if (this.lastRun.TimeOfDay < this.time  && DateTime.Now.TimeOfDay >= this.time)
-					{
-						this.Launch();
-					}
-				}
-				catch
-				{
-
-				}
-				finally
-				{
-					long msToLaunch = Convert.ToInt32(this.time.TotalMilliseconds - DateTime.Now.TimeOfDay.TotalMilliseconds);
-					
-					if (msToLaunch < 0) msToLaunch = Convert.ToInt32(this.time.TotalMilliseconds);
-					if (msToLaunch < 10) msToLaunch = 10;
-					
-					this.launchTimer.Change(msToLaunch, Timeout.Infinite);
-				}
+				this.Launch();
 			}
 		}
 		
+		internal override void Serialize(XML.Writer writer)
+		{
+			writer.WriteStartElement("OnTimeOfDay");
+			writer.WriteAttributeString("time", this.time);
+			writer.WriteEndElement();	// OnStartup
+		}
 	}
 }

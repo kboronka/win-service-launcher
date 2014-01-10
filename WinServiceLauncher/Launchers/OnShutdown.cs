@@ -30,13 +30,16 @@ namespace WinServiceLauncher.Launchers
 		{
 		}
 
-		protected override void LaunchTick(Object state)
+		protected override void ServiceLauncher()
 		{
-			lock (this.launchTimer)
-			{
-				// do nothing
-			}
+			// TODO: add code
+			Thread.Sleep(10);
 		}
 		
+		internal override void Serialize(XML.Writer writer)
+		{
+			writer.WriteStartElement("OnShutdown");
+			writer.WriteEndElement();	// OnShutdown
+		}
 	}
 }

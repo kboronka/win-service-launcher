@@ -34,6 +34,8 @@ namespace WinServiceLauncher
 		{
 			try
 			{
+				Program.LogInfo();
+				
 				if (!System.Environment.UserInteractive)
 				{
 					ServiceBase.Run(new ServiceBase[] { new WinServiceLauncher() });
