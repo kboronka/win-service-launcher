@@ -30,7 +30,11 @@
 	svn cleanup
 	svn update
 	%SAR% -kill "WinServiceLauncher.exe"
-	%SAR% -f.d  ".\WinServiceLauncherInstaller\bin\%CONFIG%\*.*" /q /svn
+	%SAR% -f.d  ".\WinServiceLauncher\bin\%CONFIG%\*.*" /q /svn
+	%SAR% -f.d  ".\WinServiceLauncherSetup\bin\%CONFIG%\*.*" /q /svn
+	%SAR% -f.d  ".\WinServiceLauncher\obj\%CONFIG%\*.*" /q /svn
+	%SAR% -f.d  ".\WinServiceLauncherSetup\obj\%CONFIG%\*.*" /q /svn
+	
 	%SAR% -f.bsd "\WinServiceLauncher\*.cs" "Kevin Boronka"
 	%SAR% -f.bsd "\WinServiceLauncherSetup\*.cs" "Kevin Boronka"
 	
