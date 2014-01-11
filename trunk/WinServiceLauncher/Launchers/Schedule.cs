@@ -99,7 +99,7 @@ namespace WinServiceLauncher.Launchers
 			try
 			{
 				
-				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching " + this.parent.Filename + this.parent.Arguments);
+				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching " + this.parent.Filename + " " + this.parent.Arguments);
 				
 				if (String.IsNullOrEmpty(this.parent.Domain))
 				{
