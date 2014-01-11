@@ -38,6 +38,7 @@ namespace WinServiceLauncher.Launchers
 			if (this.lastRun.TimeOfDay < this.time  && DateTime.Now.TimeOfDay >= this.time)
 			{
 				this.Launch();
+				Thread.Sleep(2000);
 			}
 		}
 		
