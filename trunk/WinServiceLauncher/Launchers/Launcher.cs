@@ -33,14 +33,18 @@ namespace WinServiceLauncher.Launchers
 		private string domain;
 		private string username;
 		private string password;
-		private long interval;
 
 		private List<Schedule> schedules;
 		
 		#region properties
 
-		public string Name {
-			get { return name; }
+		public string Name
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(name)) name = filename;
+				return name;
+			}
 		}
 
 		public string Filepath {
@@ -110,7 +114,6 @@ namespace WinServiceLauncher.Launchers
 			this.domain = reader.GetAttributeString("domain");
 			this.username = reader.GetAttributeString("username");
 			this.password = reader.GetAttributeString("password");
-			this.interval = reader.GetAttributeLong("interval");
 			this.schedules = new List<Schedule>();
 			
 			while (reader.Read() && (reader.NodeType != XmlNodeType.EndElement))
@@ -163,13 +166,12 @@ namespace WinServiceLauncher.Launchers
 		public void Serialize(XML.Writer writer)
 		{
 			writer.WriteStartElement("Launcher");
-			writer.WriteAttributeString("name", this.name);
+			writer.WriteAttributeString("name", this.Name);
 			writer.WriteAttributeString("filename", this.filepath);
-			writer.WriteAttributeString("arguments", this.arguments);
-			writer.WriteAttributeString("domain", this.domain);
-			writer.WriteAttributeString("username", this.username);
-			writer.WriteAttributeString("password", this.password);
-			writer.WriteAttributeString("interval", this.interval.ToString());
+			writer.WriteAttributeString("arguments", this.Arguments);
+			writer.WriteAttributeString("domain", this.Domain);
+			writer.WriteAttributeString("username", this.Username);
+			writer.WriteAttributeString("password", this.Password);
 			
 			foreach (Schedule schedule in this.schedules)
 			{
