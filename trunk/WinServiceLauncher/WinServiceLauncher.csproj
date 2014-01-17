@@ -73,7 +73,9 @@
     <Compile Include="Commands\Stop.cs" />
     <Compile Include="Commands\Uninstall.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="DriveFreespaceMonitor.cs" />
     <Compile Include="Launchers\History.cs" />
+    <Compile Include="Launchers\KeepAlive.cs" />
     <Compile Include="Launchers\OnInterval.cs" />
     <Compile Include="Launchers\Launcher.cs" />
     <Compile Include="Launchers\OnShutdown.cs" />

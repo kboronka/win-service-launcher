@@ -135,6 +135,9 @@ namespace WinServiceLauncher.Launchers
 						case "OnShutdown":
 							this.schedules.Add(new OnShutdown(this, reader));
 							break;
+						case "KeepAlive":
+							this.schedules.Add(new KeepAlive(this, reader));
+							break;							
 					}
 				}
 			}
