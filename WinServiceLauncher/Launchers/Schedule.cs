@@ -14,6 +14,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.Threading;
 
 using sar.Tools;
@@ -25,6 +26,8 @@ namespace WinServiceLauncher.Launchers
 		protected Launcher parent;
 		protected DateTime lastRun;
 		protected int loopRate = 100;
+		protected int processID;
+		protected string processName;
 		
 		public Schedule(Launcher parent)
 		{
@@ -94,20 +97,23 @@ namespace WinServiceLauncher.Launchers
 		
 		protected abstract void ServiceLauncher();
 		
-		public void Launch()
+		public Process Launch()
 		{
+			Process spawnedProcess = null;
+			
 			try
-			{
-				
+			{	
 				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching " + this.parent.Filename + " " + this.parent.Arguments);
 				
 				if (String.IsNullOrEmpty(this.parent.Domain))
 				{
-					ConsoleHelper.Start(this.parent.Filepath, this.parent.Arguments);
+					spawnedProcess = ConsoleHelper.Start(this.parent.Filepath, this.parent.Arguments);
+					this.processID = spawnedProcess.Id;
+					this.processName = spawnedProcess.ProcessName;
 				}
 				else
 				{
-					ConsoleHelper.StartAs(this.parent.Filepath, this.parent.Arguments, this.parent.Domain, this.parent.Username, this.parent.Password);
+					spawnedProcess = ConsoleHelper.StartAs(this.parent.Filepath, this.parent.Arguments, this.parent.Domain, this.parent.Username, this.parent.Password);
 				}
 				
 				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching complete");
@@ -118,6 +124,8 @@ namespace WinServiceLauncher.Launchers
 				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching failed");
 				Program.Log(ex);
 			}
+			
+			return spawnedProcess;
 		}
 		
 		#endregion

@@ -26,7 +26,6 @@ namespace WinServiceLauncher
 {
 	public class SocketServer : sar.Socket.SocketServer
 	{
-	
 		#region constructors
 		
 		public SocketServer(XML.Reader reader): base(int.Parse(reader.GetAttributeString("port")), Program.ErrorLog, Program.DebugLog)
