@@ -35,10 +35,12 @@ namespace WinServiceLauncher.Launchers
 
 		protected override void ServiceLauncher()
 		{
-			if (this.lastRun.TimeOfDay < this.time  && DateTime.Now.TimeOfDay >= this.time)
+			double countDown = DateTime.Now.TimeOfDay.TotalMilliseconds - this.time.TotalMilliseconds;
+			
+			if (countDown > 0 && countDown < 500)
 			{
 				this.Launch();
-				Thread.Sleep(2000);
+				Thread.Sleep(90000);
 			}
 		}
 		
