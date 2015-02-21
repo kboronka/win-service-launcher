@@ -14,27 +14,21 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Configuration.Install;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading;
 
-using sar.Base;
+using Base=sar.Base;
 using sar.Tools;
 
 namespace WinServiceLauncher
 {
-	internal sealed class Program : sar.Base.Program
+	internal sealed class Program : Base.Program
 	{
 		static void Main(string[] args)
 		{
 			try
 			{
-				Program.LogInfo();
+				Base.Program.LogInfo();
 				
 				if (!System.Environment.UserInteractive)
 				{
@@ -44,7 +38,7 @@ namespace WinServiceLauncher
 				{
 					try
 					{
-						CommandHub hub = new CommandHub();
+						var hub = new CommandHub();
 						ConsoleHelper.Start();
 						ConsoleHelper.ApplicationShortTitle();
 						hub.ProcessCommands(args);
