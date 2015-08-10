@@ -1,0 +1,6 @@
+{
+  "name": "win-service-launcher",
+  "dependencies": {
+    "sar-tool": "https://github.com/kboronka/sar-tool.git#master"
+  }
+}

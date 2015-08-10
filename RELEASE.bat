@@ -14,7 +14,7 @@
 	@echo off
 	pushd "%~dp0"
 	set SOLUTION=WinServiceLauncher.sln
-	set REPO=https://win-service-launcher.googlecode.com/svn
+	set REPO=https://github.com/kboronka/win-service-launcher/
 	set CONFIG=Release
 	set BASEPATH=%~dp0
 
