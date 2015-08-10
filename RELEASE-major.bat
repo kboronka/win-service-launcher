@@ -47,6 +47,7 @@
 
 :BuildComplete
 	copy WinServiceLauncher\bin\%CONFIG%\*.exe release\*.exe
+	copy WinServiceLauncher\bin\%CONFIG%\*.dll release\*.dll
 	copy WinServiceLauncher\bin\%CONFIG%\*.pdb release\*.pdb
 	copy LICENSE release\LICENSE
 	
