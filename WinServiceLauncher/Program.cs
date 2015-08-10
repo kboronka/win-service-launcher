@@ -39,7 +39,7 @@ namespace WinServiceLauncher
 					try
 					{
 						var hub = new CommandHub();
-						ConsoleHelper.Start();
+						Progress.Start();
 						ConsoleHelper.ApplicationShortTitle();
 						hub.ProcessCommands(args);
 					}
@@ -49,7 +49,7 @@ namespace WinServiceLauncher
 
 					}
 					
-					ConsoleHelper.Shutdown();
+					Progress.Stop();
 					return;
 				}
 			}

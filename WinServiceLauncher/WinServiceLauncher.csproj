@@ -48,7 +48,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="sar">
-      <HintPath>..\lib\sar\sar.exe</HintPath>
+      <HintPath>..\libs\sar-tool\release\sar.exe</HintPath>
+    </Reference>
+    <Reference Include="sarControls">
+      <HintPath>..\libs\sar-controls\release\sarControls.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
