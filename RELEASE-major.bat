@@ -23,7 +23,7 @@
 	set BASEPATH=%~dp0
 
 :Paths
-	set SAR="libs\sar-tool\release\sar.exe"
+	set SAR="release\sar.exe"
 	set ZIP="%PROGRAMFILES%\7-Zip\7zG.exe" a -tzip
 
 	
@@ -31,10 +31,11 @@
 	echo "VERSION.MAJOR.MINOR.BUILD".
 	set /p VERSION="> "
 
+	%SAR% -bower
+	
 	svn cleanup
 	svn update
 
-	%SAR% -bower
 	%SAR% -f.bsd \WinServiceLauncher\*.cs "Kevin Boronka"
 	%SAR% -f.bsd \WinServiceLauncherSetup\*.cs "Kevin Boronka"
 	%SAR% -assy.ver \sar\AssemblyInfo.* %VERSION%
