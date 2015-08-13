@@ -34,6 +34,7 @@
 	svn cleanup
 	svn update
 
+	%SAR% -bower
 	%SAR% -f.bsd \WinServiceLauncher\*.cs "Kevin Boronka"
 	%SAR% -f.bsd \WinServiceLauncherSetup\*.cs "Kevin Boronka"
 	%SAR% -assy.ver \sar\AssemblyInfo.* %VERSION%

@@ -35,6 +35,7 @@
 	svn update
 	svn revert -R .
 	
+	%SAR% -bower	
 	%SAR% -assy.ver \WinServiceLauncher\AssemblyInfo.* %VERSION%
 	%SAR% -f.del WinServiceLauncher\bin\%CONFIG%\*.* /q /svn
 	
