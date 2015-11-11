@@ -57,7 +57,7 @@ namespace WinServiceLauncher.Launchers
 			}
 			else
 			{
-				Process[] processList = Process.GetProcessesByName(this.processName);
+				var processList = Process.GetProcessesByName(this.processName);
 				if (processList.Length > 0)
 				{
 					process = processList[0];

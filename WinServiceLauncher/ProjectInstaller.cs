@@ -61,7 +61,7 @@ namespace WinServiceLauncher
 		
 		private void ServiceInstaller_AfterInstall(object sender, InstallEventArgs e)
 		{
-			ServiceController serviceController = new ServiceController(serviceInstaller.ServiceName);
+			var serviceController = new ServiceController(serviceInstaller.ServiceName);
 			//ServiceHelper.ChangeStartMode(serviceController, ServiceStartMode.Automatic);
 			serviceController.Start();
 		}
