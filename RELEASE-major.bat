@@ -31,7 +31,7 @@
 	echo "VERSION.MAJOR.MINOR.BUILD".
 	set /p VERSION="> "
 
-	%SAR% -bower
+	call UpdateExternals.bat
 	
 	svn cleanup
 	svn update
