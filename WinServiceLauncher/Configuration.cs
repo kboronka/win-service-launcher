@@ -50,6 +50,11 @@ namespace WinServiceLauncher
 			Configuration.all = Configuration.All;
 		}
 		
+		protected override void InitDefaults()
+		{
+			this.launchers = new List<Launcher>();
+		}
+		
 		#endregion
 		
 		private List<Launcher> launchers;
