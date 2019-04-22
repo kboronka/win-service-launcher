@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
     <ProjectGuid>{5CE8FCB6-9EB4-4290-9E95-B2F252C12C90}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -76,7 +76,6 @@
     <Compile Include="Commands\Stop.cs" />
     <Compile Include="Commands\Uninstall.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="DriveFreespaceMonitor.cs" />
     <Compile Include="Launchers\History.cs" />
     <Compile Include="Launchers\KeepAlive.cs" />
     <Compile Include="Launchers\OnInterval.cs" />
