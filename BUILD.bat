@@ -14,7 +14,7 @@
 	set /p VERSION="> "
 
 	%SAR% -f.bsd \WinServiceLauncher\*.cs "Kevin Boronka"
-	%SAR% -assy.ver \sar\AssemblyInfo.* %VERSION%
+	%SAR% -assy.ver \WinServiceLauncher\AssemblyInfo.* %VERSION%
 
 	%SAR% -f.del WinServiceLauncher\bin\%CONFIG%\*.* /q /svn
 	
