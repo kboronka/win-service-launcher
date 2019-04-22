@@ -13,11 +13,6 @@
 	echo "VERSION.MAJOR.MINOR.BUILD".
 	set /p VERSION="> "
 
-	call UpdateExternals.bat
-	
-	svn cleanup
-	svn update
-
 	%SAR% -f.bsd \WinServiceLauncher\*.cs "Kevin Boronka"
 	%SAR% -assy.ver \sar\AssemblyInfo.* %VERSION%
 
