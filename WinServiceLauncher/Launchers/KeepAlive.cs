@@ -45,7 +45,6 @@ namespace WinServiceLauncher.Launchers
 					if (processName != process.ProcessName)
 					{
 						processName = process.ProcessName;
-						Configuration.All.Save();
 					}
 				}
 				catch

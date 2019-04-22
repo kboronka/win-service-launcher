@@ -14,6 +14,8 @@
  */
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Management;
@@ -113,7 +115,7 @@ namespace WinServiceLauncher.Launchers
 			{
 				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching " + this.parent.Command + " " + this.parent.Arguments);
 				
-				spawnedProcess = Start(parent.WorkingPath, parent.Command, parent.Arguments);
+				spawnedProcess = Start(parent.WorkingPath, parent.Command, parent.Arguments, parent.EnvironmentVariables);
 				this.processID = spawnedProcess.Id;
 				this.processName = spawnedProcess.ProcessName;
 				
@@ -129,14 +131,27 @@ namespace WinServiceLauncher.Launchers
 			return spawnedProcess;
 		}
 		
-		public static Process Start(string workingDirectory, string command, string arguments)
+		public static Process Start(string workingDirectory, string command, string arguments, List<EnvironmentVariable> variables)
 		{
 			arguments = arguments.TrimWhiteSpace();
-			return Process.Start(new ProcessStartInfo {
-			                     	WorkingDirectory = workingDirectory,
-			                     	FileName = command,
-			                     	Arguments = arguments
-			                     });
+			var startInfo = new ProcessStartInfo();
+
+			foreach (DictionaryEntry e in System.Environment.GetEnvironmentVariables())
+			{
+				startInfo.EnvironmentVariables[e.Key.ToString()] = e.Value.ToString();
+			}
+			
+			foreach (var variable in variables)
+			{
+				startInfo.EnvironmentVariables[variable.Variable] = variable.Value;
+			}
+
+			startInfo.WorkingDirectory = workingDirectory;
+			startInfo.FileName = command;
+			startInfo.Arguments = arguments;
+			startInfo.UseShellExecute = false;
+			
+			return Process.Start(startInfo);
 		}
 		
 		private static void KillProcessAndChildrens(int pid)

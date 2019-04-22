@@ -39,6 +39,7 @@ namespace WinServiceLauncher.Launchers
 			this.command = reader.GetAttributeString("command");
 			this.arguments = reader.GetAttributeString("arguments");
 			this.schedules = new List<Schedule>();
+			this.EnvironmentVariables = new List<EnvironmentVariable>();
 			
 			while (reader.Read() && (reader.NodeType != XmlNodeType.EndElement))
 			{
@@ -62,6 +63,9 @@ namespace WinServiceLauncher.Launchers
 						case "KeepAlive":
 							this.schedules.Add(new KeepAlive(this, reader));
 							break;
+						case "Environment":
+							this.EnvironmentVariables.Add(new EnvironmentVariable(reader));
+							break;							
 					}
 				}
 			}
@@ -82,6 +86,8 @@ namespace WinServiceLauncher.Launchers
 
 		public string Arguments { get { return arguments; } }
 		
+		public List<EnvironmentVariable> EnvironmentVariables { get; private set; }
+		
 		#region methods
 		
 		public void Start()
@@ -101,22 +107,6 @@ namespace WinServiceLauncher.Launchers
 			
 			Program.Log("Shutting Down " + this.command);
 			ConsoleHelper.KillProcess(this.command);
-		}
-		
-		public void Serialize(XML.Writer writer)
-		{
-			writer.WriteStartElement("Launcher");
-			writer.WriteAttributeString("name", this.Name);
-			writer.WriteAttributeString("workingPath", this.workingPath);
-			writer.WriteAttributeString("command", this.workingPath);
-			writer.WriteAttributeString("arguments", this.Arguments);
-			
-			foreach (Schedule schedule in this.schedules)
-			{
-				schedule.Serialize(writer);
-			}
-			
-			writer.WriteEndElement();	// Launcher
 		}
 		
 		#endregion

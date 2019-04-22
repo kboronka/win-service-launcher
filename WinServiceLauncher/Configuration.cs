@@ -25,26 +25,23 @@ using WinServiceLauncher.Launchers;
 
 namespace WinServiceLauncher
 {
-	public class Configuration : sar.Base.Configuration
+	public class Configuration
 	{
 		#region singleton
 		
 		private static Configuration all;
 		
-		public static Configuration All
-		{
-			get
-			{
-				if (Configuration.all == null)
-				{
+		public static Configuration All {
+			get {
+				if (Configuration.all == null) {
 					var path = ApplicationInfo.CurrentDirectory + AssemblyInfo.Name + ".xml";
+					
 					#if DEBUG
 					path = Path.Combine(ApplicationInfo.CurrentDirectory, @"..\..\..\");
 					path = Path.Combine(path, AssemblyInfo.Name + ".xml");
 					#endif
 					
 					Configuration.all = new Configuration(path);
-					all.Save();
 				}
 				
 				return Configuration.all;
@@ -61,55 +58,44 @@ namespace WinServiceLauncher
 		private List<Launcher> launchers;
 		
 		public 	Configuration(string path)
-			: base(path)
 		{
-			
+			if (File.Exists(path)) {
+				var reader = new XML.Reader(path);
+				try {
+					this.Deserialize(reader);
+				} catch {
+					
+				}
+				
+				reader.Close();
+			}
 		}
 		
-		public List<Launcher> Launchers
-		{
-			get
-			{
-				if (launchers == null) Configuration.Load();
+		public List<Launcher> Launchers {
+			get {
+				if (launchers == null)
+					Configuration.Load();
 				return launchers;
 			}
 		}
 		
-		protected override void Deserialize(XML.Reader reader)
+		protected void Deserialize(XML.Reader reader)
 		{
 			this.launchers = new List<Launcher>();
 
-			try
-			{
-				while (reader.Read())
-				{
-					if (reader.NodeType == XmlNodeType.Element)
-					{
-						switch (reader.Name)
-						{
+			try {
+				while (reader.Read()) {
+					if (reader.NodeType == XmlNodeType.Element) {
+						switch (reader.Name) {
 							case "Launcher":
 								this.launchers.Add(new Launcher(reader));
 								break;
 						}
 					}
 				}
-			}
-			catch
-			{
+			} catch {
 				
 			}
-		}
-		
-		protected override void Serialize(XML.Writer writer)
-		{
-			writer.WriteStartElement("Launchers");
-
-			foreach (Launcher launcher in Configuration.All.Launchers)
-			{
-				launcher.Serialize(writer);
-			}
-			
-			writer.WriteEndElement();	// Launchers
 		}
 	}
 }

@@ -31,11 +31,17 @@ Parameters: `name, working-path, command, arguments`
 Launches application process when the service is being started, then continuously monitors the process to make sure it is always running.
 Parameters: `name, working-path, command, arguments, processName`
 
+### environment variables
+Sets custom environment variables for the process being launched 
+parameters: `variable, value`
+
 ### Example XML configuration file
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <WinServiceLauncher version="0.0.0.42">
-	<Launcher name="Sample Node.JS Service" working-path="c:\my-node-app\" command="npm" arguments="start">
+	<Launcher name="Node.JS Web App" working-path="c:\my-node-app\" command="C:\Program Files\nodejs\npm.cmd" arguments="start">
+		<Environment variable="PORT" value="8080" />
+		<Environment variable="DATABASE" value="mongodb://localhost:27017/dbname" />
 		<OnStartup/>
 	</Launcher>
 </WinServiceLauncher>
