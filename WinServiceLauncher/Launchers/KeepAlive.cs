@@ -25,7 +25,7 @@ namespace WinServiceLauncher.Launchers
 	{
 		public KeepAlive(Launcher parent) : base(parent)
 		{
-			this.processName = parent.Filename;
+			this.processName = parent.Command;
 		}
 		
 		public KeepAlive(Launcher parent, XML.Reader reader) : base(parent, reader)

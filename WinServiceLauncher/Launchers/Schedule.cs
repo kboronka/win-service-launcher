@@ -81,7 +81,7 @@ namespace WinServiceLauncher.Launchers
 			while (!launchLoopShutdown)
 			{
 				try
-				{				
+				{
 					this.ServiceLauncher();
 					Thread.Sleep(100);
 				}
@@ -102,19 +102,12 @@ namespace WinServiceLauncher.Launchers
 			Process spawnedProcess = null;
 			
 			try
-			{	
-				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching " + this.parent.Filename + " " + this.parent.Arguments);
+			{
+				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching " + this.parent.Command + " " + this.parent.Arguments);
 				
-				if (String.IsNullOrEmpty(this.parent.Domain))
-				{
-					spawnedProcess = ConsoleHelper.Start(this.parent.Filepath, this.parent.Arguments);
-					this.processID = spawnedProcess.Id;
-					this.processName = spawnedProcess.ProcessName;
-				}
-				else
-				{
-					spawnedProcess = ConsoleHelper.StartAs(this.parent.Filepath, this.parent.Arguments, this.parent.Domain, this.parent.Username, this.parent.Password);
-				}
+				spawnedProcess = Start(parent.WorkingPath, parent.Command, parent.Arguments);
+				this.processID = spawnedProcess.Id;
+				this.processName = spawnedProcess.ProcessName;
 				
 				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching complete");
 				this.lastRun = DateTime.Now;
@@ -126,6 +119,16 @@ namespace WinServiceLauncher.Launchers
 			}
 			
 			return spawnedProcess;
+		}
+		
+		public static Process Start(string workingDirectory, string command, string arguments)
+		{
+			arguments = arguments.TrimWhiteSpace();
+			return Process.Start(new ProcessStartInfo {
+			                     	WorkingDirectory = workingDirectory,
+			                     	FileName = command,
+			                     	Arguments = arguments
+			                     });
 		}
 		
 		#endregion

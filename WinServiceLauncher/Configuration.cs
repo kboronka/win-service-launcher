@@ -37,7 +37,13 @@ namespace WinServiceLauncher
 			{
 				if (Configuration.all == null)
 				{
-					Configuration.all = new Configuration();
+					var path = ApplicationInfo.CurrentDirectory + AssemblyInfo.Name + ".xml";
+					#if DEBUG
+					path = Path.Combine(ApplicationInfo.CurrentDirectory, @"..\..\..\");
+					path = Path.Combine(path, AssemblyInfo.Name + ".xml");
+					#endif
+					
+					Configuration.all = new Configuration(path);
 					all.Save();
 				}
 				
@@ -53,7 +59,12 @@ namespace WinServiceLauncher
 		#endregion
 		
 		private List<Launcher> launchers;
-		private SocketServer socketServer;
+		
+		public 	Configuration(string path)
+			: base(path)
+		{
+			
+		}
 		
 		public List<Launcher> Launchers
 		{
@@ -79,9 +90,6 @@ namespace WinServiceLauncher
 							case "Launcher":
 								this.launchers.Add(new Launcher(reader));
 								break;
-							case "SocketServer":
-								socketServer = new SocketServer(reader);
-								break;
 						}
 					}
 				}
@@ -94,8 +102,6 @@ namespace WinServiceLauncher
 		
 		protected override void Serialize(XML.Writer writer)
 		{
-			if (this.socketServer != null) this.socketServer.Serialize(writer);
-
 			writer.WriteStartElement("Launchers");
 
 			foreach (Launcher launcher in Configuration.All.Launchers)

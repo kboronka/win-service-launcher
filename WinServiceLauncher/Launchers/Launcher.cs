@@ -27,93 +27,17 @@ namespace WinServiceLauncher.Launchers
 	public class Launcher
 	{
 		private string name;
-		private string filepath;
-		private string filename;
+		private string workingPath;
+		private string command;
 		private string arguments;
-		private string domain;
-		private string username;
-		private string password;
-
 		private List<Schedule> schedules;
-		
-		#region properties
-
-		public string Name
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(name)) name = filename;
-				return name;
-			}
-		}
-
-		public string Filepath {
-			get { return filepath; }
-		}
-
-		public string Filename {
-			get { return filename; }
-		}
-
-		public string Arguments {
-			get { return arguments; }
-		}
-
-		public string Domain {
-			get { return domain; }
-		}
-
-		public string Username {
-			get { return username; }
-		}
-
-		public string Password {
-			get { return password; }
-		}
-		
-		#endregion
-		
-		#region constructors
-		
-		public Launcher(string filepath, string arguments)
-		{
-			this.filepath = filepath;
-			this.filename = IO.GetFilename(this.filepath);
-			this.arguments = arguments;
-			this.schedules = new List<Schedule>();
-		}
-
-		public Launcher(string filepath, string arguments, string username, string password)
-		{
-			this.filepath = filepath;
-			this.filename = IO.GetFilename(this.filepath);
-			this.arguments = arguments;
-			this.domain = System.Environment.MachineName;
-			this.username = username;
-			this.password = password;
-			this.schedules = new List<Schedule>();
-		}
-		
-		public Launcher(string filename, string arguments, string domain, string username, string password)
-		{
-			this.filepath = filename;
-			this.filename = IO.GetFilename(this.filepath);
-			this.arguments = arguments;
-			this.domain = domain;
-			this.username = username;
-			this.password = password;
-			this.schedules = new List<Schedule>();
-		}
 		
 		public Launcher(XML.Reader reader)
 		{
 			this.name = reader.GetAttributeString("name");
-			this.filepath = reader.GetAttributeString("filename");
-			this.filename = IO.GetFilename(this.filepath);
+			this.workingPath = reader.GetAttributeString("working-path");
+			this.command = reader.GetAttributeString("command");
 			this.arguments = reader.GetAttributeString("arguments");
-			this.domain = reader.GetAttributeString("domain");
-			this.username = reader.GetAttributeString("username");
-			this.password = reader.GetAttributeString("password");
 			this.schedules = new List<Schedule>();
 			
 			while (reader.Read() && (reader.NodeType != XmlNodeType.EndElement))
@@ -137,13 +61,26 @@ namespace WinServiceLauncher.Launchers
 							break;
 						case "KeepAlive":
 							this.schedules.Add(new KeepAlive(this, reader));
-							break;							
+							break;
 					}
 				}
 			}
 		}
-		
-		#endregion
+
+		public string Name
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(name)) name = command;
+				return name;
+			}
+		}
+
+		public string WorkingPath { get { return workingPath; } }
+
+		public string Command { get { return command; } }
+
+		public string Arguments { get { return arguments; } }
 		
 		#region methods
 		
@@ -162,19 +99,17 @@ namespace WinServiceLauncher.Launchers
 				schedule.StopAsync();
 			}
 			
-			Program.Log("Shutting Down " + this.filename);
-			ConsoleHelper.KillProcess(this.filename);
+			Program.Log("Shutting Down " + this.command);
+			ConsoleHelper.KillProcess(this.command);
 		}
 		
 		public void Serialize(XML.Writer writer)
 		{
 			writer.WriteStartElement("Launcher");
 			writer.WriteAttributeString("name", this.Name);
-			writer.WriteAttributeString("filename", this.filepath);
+			writer.WriteAttributeString("workingPath", this.workingPath);
+			writer.WriteAttributeString("command", this.workingPath);
 			writer.WriteAttributeString("arguments", this.Arguments);
-			writer.WriteAttributeString("domain", this.Domain);
-			writer.WriteAttributeString("username", this.Username);
-			writer.WriteAttributeString("password", this.Password);
 			
 			foreach (Schedule schedule in this.schedules)
 			{

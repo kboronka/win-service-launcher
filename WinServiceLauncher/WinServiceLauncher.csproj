@@ -84,7 +84,6 @@
     <Compile Include="Launchers\OnStartup.cs" />
     <Compile Include="Launchers\OnTimeOfDay.cs" />
     <Compile Include="Launchers\Schedule.cs" />
-    <Compile Include="SocketServer.cs" />
     <Compile Include="WinLauncherService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs" />
