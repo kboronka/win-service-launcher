@@ -7,31 +7,32 @@ runs as a service and launches non-service applications
 3. edit WinServiceLauncher.xml 
 3. start the service `WinServiceLauncher.exe start`
 
-## setting up 'launchers'
-### types of launcher schedules
-#### OnInterval
-Launches process at given intervals
-Parameters: `name, working-path, command, arguments, interval (ms)`
+## setting up launchers
 
-#### OnTimeOfDay
-Launches application process at given intervals
-Parameters: `name, working-path, command, arguments, time`
-
-#### OnStartup
-Launches application process when the service is being started
-Parameters: `name, working-path, command, arguments, time`
-
-#### OnShutdown
-Launches application process when the service is being shutdown
-Parameters: `name, working-path, command, arguments`
-
-#### KeepAlive
-Launches application process when the service is being started, then continuously monitors the process to make sure it is always running.
-Parameters: `name, working-path, command, arguments, processName`
+### schedule types
+  #### OnInterval
+  Launches process at given intervals
+  Parameters: `name, working-path, command, arguments, interval (ms)`
+  
+  #### OnTimeOfDay
+  Launches application process at given intervals
+  Parameters: `name, working-path, command, arguments, time`
+  
+  #### OnStartup
+  Launches application process when the service is being started
+  Parameters: `name, working-path, command, arguments, time`
+  
+  #### OnShutdown
+  Launches application process when the service is being shutdown
+  Parameters: `name, working-path, command, arguments`
+  
+  #### KeepAlive
+  Launches application process when the service is being started, then continuously monitors the process to make sure it is always running.
+  Parameters: `name, working-path, command, arguments, processName`
 
 ### environment variables
-Sets custom environment variables for the process being launched 
-parameters: `variable, value`
+  Sets custom environment variables for the process being launched 
+  parameters: `variable, value`
 
 ### Example XML configuration file
 ```xml
