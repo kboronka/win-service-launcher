@@ -16,6 +16,7 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
+using System.Management;
 
 using sar.Tools;
 
@@ -46,6 +47,7 @@ namespace WinServiceLauncher.Launchers
 		
 		private Thread launchLoopThread;
 		private bool launchLoopShutdown;
+		Process spawnedProcess;
 
 		public void StartAsync()
 		{
@@ -65,7 +67,15 @@ namespace WinServiceLauncher.Launchers
 			try
 			{
 				this.launchLoopShutdown = true;
-				this.launchLoopThread.Join();
+				
+				if (this.launchLoopThread != null) {
+					this.launchLoopThread.Join();
+				}
+				
+				if (spawnedProcess != null && !spawnedProcess.HasExited)
+				{
+					KillProcessAndChildrens(spawnedProcess.Id);
+				}
 			}
 			catch (Exception ex)
 			{
@@ -99,8 +109,6 @@ namespace WinServiceLauncher.Launchers
 		
 		public Process Launch()
 		{
-			Process spawnedProcess = null;
-			
 			try
 			{
 				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching " + this.parent.Command + " " + this.parent.Arguments);
@@ -129,6 +137,31 @@ namespace WinServiceLauncher.Launchers
 			                     	FileName = command,
 			                     	Arguments = arguments
 			                     });
+		}
+		
+		private static void KillProcessAndChildrens(int pid)
+		{
+			var processSearcher = new ManagementObjectSearcher
+				("Select * From Win32_Process Where ParentProcessID=" + pid);
+			ManagementObjectCollection processCollection = processSearcher.Get();
+
+			try
+			{
+				Process proc = Process.GetProcessById(pid);
+				if (!proc.HasExited) proc.Kill();
+			}
+			catch (ArgumentException)
+			{
+				// Process already exited.
+			}
+
+			if (processCollection != null)
+			{
+				foreach (ManagementObject mo in processCollection)
+				{
+					KillProcessAndChildrens(Convert.ToInt32(mo["ProcessID"])); //kill child processes(also kills childrens of childrens etc.)
+				}
+			}
 		}
 		
 		#endregion

@@ -78,6 +78,24 @@ namespace WinServiceLauncher
 			{
 				Program.Log(ex);
 			}
-		}		
+		}
+
+		public static void StopServices()
+		{
+			try
+			{
+				if (Configuration.All.Launchers != null)
+				{
+					foreach (Launcher app in Configuration.All.Launchers)
+					{
+						app.Kill();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Program.Log(ex);
+			}
+		}
 	}
 }
