@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WinServiceLauncher version="0.0.0.42">
+	<Launcher name="Sample Node.JS Service" working-path="c:\my-node-app\" command="npm" arguments="start">
+		<OnStartup/>
+	</Launcher>
+</WinServiceLauncher>
