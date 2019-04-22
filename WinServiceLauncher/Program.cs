@@ -48,7 +48,7 @@ namespace WinServiceLauncher
 			Progress.Message = "Shutting Down";
 
 			WinServiceLauncher.StopServices();
-			Thread.Sleep(2000); 
+			Thread.Sleep(250); 
 
 			//allow main to run off
 			exitSystem = true;
