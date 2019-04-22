@@ -42,7 +42,7 @@ namespace WinServiceLauncher.Commands
 				throw new ArgumentException("incorrect number of arguments");
 			}
 			
-			Progress.Message = "Installing Service";
+			ConsoleHelper.WriteLine("Installing Service");
 			List<string> installArgs = new List<string>();
 			
 			

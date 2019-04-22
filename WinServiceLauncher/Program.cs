@@ -45,13 +45,15 @@ namespace WinServiceLauncher
 		}
 
 		private static bool Handler(CtrlType sig) {
-			Progress.Message = "Shutting Down";
+			ConsoleHelper.WriteLine("Shutting Down");
 
 			WinServiceLauncher.StopServices();
 			Thread.Sleep(250); 
 
 			//allow main to run off
 			exitSystem = true;
+			
+			ConsoleHelper.WriteLine("Shut Down Complete");
 
 			//shutdown right away so there are no lingering threads
 			Environment.Exit(-1);
@@ -79,7 +81,6 @@ namespace WinServiceLauncher
 						SetConsoleCtrlHandler(_handler, true);
 						
 						var hub = new CommandHub();
-						Progress.Start();
 						ConsoleHelper.ApplicationShortTitle();
 						hub.ProcessCommands(args);
 					}
@@ -90,7 +91,6 @@ namespace WinServiceLauncher
 					}
 					
 					WinServiceLauncher.StopServices();
-					Progress.Stop();
 					return;
 				}
 			}

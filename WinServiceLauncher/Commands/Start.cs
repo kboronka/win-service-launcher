@@ -42,7 +42,7 @@ namespace WinServiceLauncher.Commands
 				throw new ArgumentException("incorrect number of arguments");
 			}
 			
-			Progress.Message = "Starting Service";
+			ConsoleHelper.WriteLine("Starting Service");
 			bool success = ServiceHelper.TryStart("WinServiceLauncher.exe");
 			
 			if (success)

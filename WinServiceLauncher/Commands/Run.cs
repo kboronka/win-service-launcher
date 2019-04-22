@@ -43,7 +43,7 @@ namespace WinServiceLauncher.Commands
 			}
 			
 			Program.Log("Engine Running in Console Mode");
-			Progress.Message = "Engine Running in Console Mode";
+			ConsoleHelper.WriteLine("Engine Running in Console Mode");
 			Thread thread = new Thread(WinServiceLauncher.StartServices);
 			thread.Start();
 			

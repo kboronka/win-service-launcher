@@ -41,7 +41,7 @@ namespace WinServiceLauncher.Commands
 				throw new ArgumentException("incorrect number of arguments");
 			}
 			
-			Progress.Message = "Uninstalling Service";
+			ConsoleHelper.WriteLine("Uninstalling Service");
 			List<string> installArgs = new List<string>();
 			
 			installArgs.Add(@"/u");
