@@ -1,14 +1,11 @@
-:BuildEnvironment
-	@echo off
-	pushd "%~dp0"
-	set SOLUTION=WinServiceLauncher.sln
-	set CONFIG=Release
-	set BASEPATH=%~dp0
+@echo off
+pushd "%~dp0"
 
 :Paths
+	set BASEPATH=%~dp0
 	set SAR="libs\sar-tool\sar.exe"
-	set ZIP="%PROGRAMFILES%\7-Zip\7zG.exe" a -tzip
-	
+	set ZIP="%PROGRAMFILES%\7-Zip\7zG.exe"
+
 :Build
 	echo "VERSION.MAJOR.MINOR.BUILD".
 	set /p VERSION="> "
@@ -16,20 +13,20 @@
 	%SAR% -f.bsd \WinServiceLauncher\*.cs "Kevin Boronka"
 	%SAR% -assy.ver \WinServiceLauncher\AssemblyInfo.* %VERSION%
 
-	%SAR% -f.del WinServiceLauncher\bin\%CONFIG%\*.* /q /svn
+	%SAR% -f.del WinServiceLauncher\bin\Release\*.* /q /svn
 	
 	echo building binaries
-	%SAR% -b.net 3.5 %SOLUTION% /p:Configuration=%CONFIG% /p:Platform=\"x86\"
+	%SAR% -b.net 3.5 WinServiceLauncher.sln /p:Configuration=Release /p:Platform=\"x86\"
 	if errorlevel 1 goto BuildFailed	
 
 :BuildComplete
-	copy WinServiceLauncher\bin\%CONFIG%\*.exe release\*.exe
-	copy WinServiceLauncher\bin\%CONFIG%\*.dll release\*.dll
-	copy WinServiceLauncher\bin\%CONFIG%\*.pdb release\*.pdb
-	copy WinServiceLauncher\WinServiceLauncher.example.xml release\*.xml
-	copy LICENSE release\LICENSE
+	copy WinServiceLauncher\bin\Release\*.exe dist\*.exe
+	copy WinServiceLauncher\bin\Release\*.dll dist\*.dll
+	copy WinServiceLauncher\bin\Release\*.pdb dist\*.pdb
+	copy WinServiceLauncher\WinServiceLauncher.example.xml dist\*.xml
+	copy LICENSE dist\LICENSE
 	
-	%ZIP% "WinServiceLauncher %VERSION%.zip" .\release\*.*
+	%ZIP% a -tzip "WinServiceLauncher %VERSION%.zip" .\dist\*.*
 	
 	echo build completed
 	popd

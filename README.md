@@ -2,7 +2,7 @@
 runs as a service and launches non-service applications
 
 ## how to install
-1. Deploy the release folder
+1. Deploy the dist folder
 2. install service run `WinServiceLauncher.exe install` as administrator
 3. edit WinServiceLauncher.xml 
 3. start the service `WinServiceLauncher.exe start`
@@ -12,7 +12,8 @@ runs as a service and launches non-service applications
 ### schedule types
 #### OnInterval
 Launches process at given intervals
-Parameters: `name, working-path, command, arguments, interval (ms)`
+Parameters: `name, working-path, command, arguments, interval`
+interval is in milliseconds
 
 #### OnTimeOfDay
 Launches application process at given intervals
@@ -38,11 +39,14 @@ parameters: `variable, value`
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <WinServiceLauncher version="0.0.0.42">
-	<Launcher name="Node.JS Web App" working-path="c:\my-node-app\" command="C:\Program Files\nodejs\npm.cmd" arguments="start">
-		<Environment variable="PORT" value="8080" />
-		<Environment variable="DATABASE" value="mongodb://localhost:27017/dbname" />
-		<OnStartup/>
-	</Launcher>
+  <Launcher name="Node.JS Web App" 
+            working-path="c:\my-node-app\" 
+            command="C:\Program Files\nodejs\npm.cmd" 
+            arguments="start">
+    <Environment variable="PORT" value="8080" />
+    <Environment variable="DATABASE" value="mongodb://localhost:27017/dbname" />
+    <OnStartup/>
+  </Launcher>
 </WinServiceLauncher>
 ```
 
