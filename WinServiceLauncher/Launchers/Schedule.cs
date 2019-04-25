@@ -31,16 +31,19 @@ namespace WinServiceLauncher.Launchers
 		protected int loopRate = 100;
 		protected int processID;
 		protected string processName;
+		private List<int> processIDs;
 		
 		public Schedule(Launcher parent)
 		{
 			this.parent = parent;
+			this.processIDs = new List<int>();
 		}
 		
 		public Schedule(Launcher parent, XML.Reader reader)
 		{
 			this.parent = parent;
 			this.lastRun = reader.GetAttributeTimestamp("lastrun");
+			this.processIDs = new List<int>();
 		}
 		
 		internal abstract void Serialize(XML.Writer writer);
@@ -68,15 +71,14 @@ namespace WinServiceLauncher.Launchers
 		{
 			try
 			{
-				this.launchLoopShutdown = true;
-				
-				if (this.launchLoopThread != null) {
-					this.launchLoopThread.Join();
+				if (spawnedProcess != null)
+				{
+					KillAllProcesses(this.processIDs);
 				}
 				
-				if (spawnedProcess != null && !spawnedProcess.HasExited)
-				{
-					KillProcessAndChildrens(spawnedProcess.Id);
+				this.launchLoopShutdown = true;
+				if (this.launchLoopThread != null) {
+					this.launchLoopThread.Join();
 				}
 			}
 			catch (Exception ex)
@@ -96,6 +98,12 @@ namespace WinServiceLauncher.Launchers
 				{
 					this.ServiceLauncher();
 					Thread.Sleep(100);
+					if (spawnedProcess != null && this.processIDs.Count == 0)
+					{
+						Thread.Sleep(8000);
+						this.processIDs = LogProcessIDs(spawnedProcess.Id);
+					}
+					
 				}
 				catch (Exception ex)
 				{
@@ -154,29 +162,40 @@ namespace WinServiceLauncher.Launchers
 			return Process.Start(startInfo);
 		}
 		
-		private static void KillProcessAndChildrens(int pid)
+		private static void KillAllProcesses(List<int> pids)
 		{
-			var processSearcher = new ManagementObjectSearcher
-				("Select * From Win32_Process Where ParentProcessID=" + pid);
+			foreach (var pid in pids)
+			{
+				ConsoleHelper.WriteLine(String.Format("Killing PID: {0}", pid));
+				Program.Log(String.Format("Killing PID: {0}", pid));
+				try
+				{
+					Process proc = Process.GetProcessById(pid);
+					if (!proc.HasExited) proc.Kill();
+				}
+				catch (ArgumentException)
+				{
+					// Process already exited.
+				}
+			}
+		}
+		
+		private static List<int> LogProcessIDs(int pid)
+		{
+			var processSearcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
 			ManagementObjectCollection processCollection = processSearcher.Get();
 
-			try
-			{
-				Process proc = Process.GetProcessById(pid);
-				if (!proc.HasExited) proc.Kill();
-			}
-			catch (ArgumentException)
-			{
-				// Process already exited.
-			}
-
+			var pids = new List<int>();
 			if (processCollection != null)
 			{
 				foreach (ManagementObject mo in processCollection)
 				{
-					KillProcessAndChildrens(Convert.ToInt32(mo["ProcessID"])); //kill child processes(also kills childrens of childrens etc.)
+					pids.AddRange(LogProcessIDs(Convert.ToInt32(mo["ProcessID"])));
 				}
 			}
+			
+			pids.Add(pid);
+			return pids;
 		}
 		
 		#endregion
