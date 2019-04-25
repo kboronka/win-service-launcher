@@ -23,7 +23,7 @@ pushd "%~dp0"
 	copy WinServiceLauncher\bin\Release\*.exe dist\*.exe
 	copy WinServiceLauncher\bin\Release\*.dll dist\*.dll
 	copy WinServiceLauncher\bin\Release\*.pdb dist\*.pdb
-	copy WinServiceLauncher\WinServiceLauncher.example.xml dist\*.xml
+	copy WinServiceLauncher\WinServiceLauncher.example.xml dist\WinServiceLauncher.example.xml
 	copy LICENSE dist\LICENSE
 	
 	%ZIP% a -tzip "WinServiceLauncher %VERSION%.zip" .\dist\*.*
