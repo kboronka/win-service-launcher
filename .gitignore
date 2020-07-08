@@ -1,6 +1,7 @@
+.vs
 WinServiceLauncher/bin/
 WinServiceLauncher/obj/
-
+WinServiceLauncher_v*
 WinServiceLauncher.xml
 WinServiceLauncher*.zip
 WinServiceLauncher.sln.cache

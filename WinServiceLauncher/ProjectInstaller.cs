@@ -1,4 +1,4 @@
-/* Copyright (C) 2019 Kevin Boronka
+/* Copyright (C) 2020 Kevin Boronka
  * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -14,6 +14,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration.Install;
@@ -29,46 +30,50 @@ namespace WinServiceLauncher
 		
 		public ProjectInstaller()
 		{
-			//this.AfterInstall += new InstallEventHandler(ServiceInstaller_AfterInstall);
+
+		}
+
+		protected override void OnBeforeInstall(IDictionary savedState)
+		{
+			base.OnBeforeInstall(savedState);
+
 			serviceProcessInstaller = new ServiceProcessInstaller();
 			serviceInstaller = new ServiceInstaller();
 			// Here you can set properties on serviceProcessInstaller or register event handlers
 
 			string username = GetContextParameter("user").Trim();
 			string password = GetContextParameter("password").Trim();
-			Program.Log("username = " + username);
-			Program.Log("password = " + password);
-			
-			if (!String.IsNullOrEmpty(username))
+			string serviceName = GetContextParameter("ServiceName").Trim();
+			sar.Base.Program.Log("username = " + username);
+			sar.Base.Program.Log("password = " + password);
+			sar.Base.Program.Log("service name = " + serviceName);
+
+			if (!string.IsNullOrEmpty(username))
 			{
 				if (username != "") serviceProcessInstaller.Username = username;
 				if (password != "") serviceProcessInstaller.Password = password;
-				
+
 				serviceProcessInstaller.Account = ServiceAccount.User;
 			}
 			else
 			{
 				serviceProcessInstaller.Account = ServiceAccount.LocalSystem;
-				//serviceProcessInstaller.Account = ServiceAccount.NetworkService;
 			}
-			
-			serviceInstaller.ServiceName = WinServiceLauncher.MyServiceName;
+
+			serviceInstaller.ServiceName = string.IsNullOrEmpty(serviceName) ? WinServiceLauncher.MyServiceName : serviceName;
 			serviceInstaller.StartType = ServiceStartMode.Automatic;
-			//serviceInstaller.DelayedAutoStart = true;
-			
-			this.Installers.AddRange(new Installer[] { serviceProcessInstaller, serviceInstaller });
+
+			Installers.AddRange(new Installer[] { serviceProcessInstaller, serviceInstaller });
 		}
-		
-		private void ServiceInstaller_AfterInstall(object sender, InstallEventArgs e)
+
+		public override void Commit(IDictionary savedState)
 		{
-			var serviceController = new ServiceController(serviceInstaller.ServiceName);
-			//ServiceHelper.ChangeStartMode(serviceController, ServiceStartMode.Automatic);
-			serviceController.Start();
+			// keep implementation empty
 		}
-		
+
 		public string GetContextParameter(string key)
 		{
-			string returnValue = "";
+			string returnValue;
 			try
 			{
 				returnValue = this.Context.Parameters[key].ToString();

@@ -1,4 +1,4 @@
-/* Copyright (C) 2019 Kevin Boronka
+/* Copyright (C) 2020 Kevin Boronka
  * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -16,11 +16,8 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration.Install;
-using System.Threading;
 using System.Reflection;
-using System.ServiceProcess;
 
-using sar.Base;
 using sar.Tools;
 
 namespace WinServiceLauncher.Commands
@@ -37,9 +34,16 @@ namespace WinServiceLauncher.Commands
 		public override int Execute(string[] args)
 		{
 			// sanity check
-			if (args.Length != 1)
+			if (args.Length > 2)
 			{
 				throw new ArgumentException("incorrect number of arguments");
+			}
+
+			string serviceName = WinServiceLauncher.MyServiceName;
+			if (args.Length == 2)
+			{
+				// service name
+				serviceName = args[1];
 			}
 			
 			ConsoleHelper.WriteLine("Installing Service");
@@ -49,9 +53,11 @@ namespace WinServiceLauncher.Commands
 			if (this.commandHub.NoWarning) installArgs.Add(@"/LogToConsole = false");
 			if (!this.commandHub.NoWarning) installArgs.Add(@"/LogToConsole = true");
 
+			installArgs.Add("/ServiceName=" + serviceName);
 			installArgs.Add(Assembly.GetExecutingAssembly().Location);
-			
-			ManagedInstallerClass.InstallHelper(installArgs.ToArray());
+			var installArgsArray = installArgs.ToArray();
+
+			ManagedInstallerClass.InstallHelper(installArgsArray);
 			
 			ConsoleHelper.WriteLine("");
 			ConsoleHelper.WriteLine("Install Complete", ConsoleColor.Yellow);

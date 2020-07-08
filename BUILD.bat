@@ -26,7 +26,7 @@ pushd "%~dp0"
 	copy WinServiceLauncher\WinServiceLauncher.example.xml dist\WinServiceLauncher.example.xml
 	copy LICENSE dist\LICENSE
 	
-	%ZIP% a -tzip "WinServiceLauncher %VERSION%.zip" .\dist\*.*
+	%ZIP% a -tzip "WinServiceLauncher_v%VERSION%.zip" .\dist\*.*
 	
 	echo build completed
 	popd
