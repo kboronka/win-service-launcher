@@ -36,17 +36,25 @@ namespace WinServiceLauncher.Commands
 		public override int Execute(string[] args)
 		{
 			// sanity check
-			if (args.Length != 1)
+			if (args.Length > 2)
 			{
 				throw new ArgumentException("incorrect number of arguments");
 			}
-			
+
+			string serviceName = WinServiceLauncher.MyServiceName;
+			if (args.Length == 2)
+			{
+				// service name
+				serviceName = args[1];
+			}
+
 			ConsoleHelper.WriteLine("Uninstalling Service");
 			List<string> installArgs = new List<string>();
 			
 			installArgs.Add(@"/u");
 			if (this.commandHub.NoWarning) installArgs.Add(@"/LogToConsole = false");
 			if (!this.commandHub.NoWarning) installArgs.Add(@"/LogToConsole = true");
+			installArgs.Add("/ServiceName=" + serviceName);
 
 			installArgs.Add(Assembly.GetExecutingAssembly().Location);
 			

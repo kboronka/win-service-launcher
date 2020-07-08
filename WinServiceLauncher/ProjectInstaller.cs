@@ -13,9 +13,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration.Install;
 using System.ServiceProcess;
@@ -25,28 +22,39 @@ namespace WinServiceLauncher
 	[RunInstaller(true)]
 	public class ProjectInstaller : Installer
 	{
-		private ServiceProcessInstaller serviceProcessInstaller;
-		private ServiceInstaller serviceInstaller;
-		
-		public ProjectInstaller()
+		private readonly ServiceProcessInstaller serviceProcessInstaller;
+		private readonly ServiceInstaller serviceInstaller;
+
+		public ProjectInstaller() 
+			: base()
 		{
-
-		}
-
-		protected override void OnBeforeInstall(IDictionary savedState)
-		{
-			base.OnBeforeInstall(savedState);
-
 			serviceProcessInstaller = new ServiceProcessInstaller();
 			serviceInstaller = new ServiceInstaller();
-			// Here you can set properties on serviceProcessInstaller or register event handlers
+			Installers.AddRange(new Installer[] { serviceProcessInstaller, serviceInstaller });
 
+			this.BeforeInstall += ProjectInstaller_BeforeInstall;
+			this.BeforeUninstall += ProjectInstaller_BeforeUninstall;
+		}
+
+		private void SetServiceName()
+		{
+			string serviceName = GetContextParameter("ServiceName").Trim();
+			sar.Base.Program.Log("service name = " + serviceName);
+			serviceInstaller.ServiceName = string.IsNullOrEmpty(serviceName) ? WinServiceLauncher.MyServiceName : serviceName;
+		}
+
+		private void ProjectInstaller_BeforeUninstall(object sender, InstallEventArgs e)
+		{
+			SetServiceName();
+		}
+
+		private void ProjectInstaller_BeforeInstall(object sender, InstallEventArgs e)
+		{
 			string username = GetContextParameter("user").Trim();
 			string password = GetContextParameter("password").Trim();
-			string serviceName = GetContextParameter("ServiceName").Trim();
+
 			sar.Base.Program.Log("username = " + username);
 			sar.Base.Program.Log("password = " + password);
-			sar.Base.Program.Log("service name = " + serviceName);
 
 			if (!string.IsNullOrEmpty(username))
 			{
@@ -60,15 +68,10 @@ namespace WinServiceLauncher
 				serviceProcessInstaller.Account = ServiceAccount.LocalSystem;
 			}
 
-			serviceInstaller.ServiceName = string.IsNullOrEmpty(serviceName) ? WinServiceLauncher.MyServiceName : serviceName;
+			SetServiceName();
+
+
 			serviceInstaller.StartType = ServiceStartMode.Automatic;
-
-			Installers.AddRange(new Installer[] { serviceProcessInstaller, serviceInstaller });
-		}
-
-		public override void Commit(IDictionary savedState)
-		{
-			// keep implementation empty
 		}
 
 		public string GetContextParameter(string key)
@@ -82,7 +85,7 @@ namespace WinServiceLauncher
 			{
 				returnValue = "";
 			}
-			
+
 			return returnValue;
 		}
 	}
