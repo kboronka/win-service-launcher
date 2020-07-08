@@ -10,7 +10,7 @@ pushd "%~dp0"
 	echo "VERSION.MAJOR.MINOR.BUILD".
 	set /p VERSION="> "
 
-	%SAR% -f.bsd \WinServiceLauncher\*.cs "Kevin Boronka"
+	%SAR% -f.bsd \WinServiceLauncher\*.cs "Kevin Boronka & Cole Willison :)"
 	%SAR% -assy.ver \WinServiceLauncher\AssemblyInfo.* %VERSION%
 
 	%SAR% -f.del WinServiceLauncher\bin\Release\*.* /q /svn
