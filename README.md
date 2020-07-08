@@ -3,7 +3,7 @@ runs as a service and launches non-service applications
 
 ## how to install
 1. Deploy the dist folder
-2. install service run `WinServiceLauncher.exe install` as administrator
+2. install service run `WinServiceLauncher.exe install <optional_service_name>` as administrator
 3. edit WinServiceLauncher.xml 
 3. start the service `WinServiceLauncher.exe start`
 

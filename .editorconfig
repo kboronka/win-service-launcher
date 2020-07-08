@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# S2589: Boolean expressions should not be gratuitous
+dotnet_diagnostic.S2589.severity = none
+
+# S1450: Private fields only used as local variables in methods should become local variables
+dotnet_diagnostic.S1450.severity = none

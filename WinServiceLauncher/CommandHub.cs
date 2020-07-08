@@ -1,4 +1,4 @@
-/* Copyright (C) 2019 Kevin Boronka
+/* Copyright (C) 2020 Kevin Boronka
  * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -13,12 +13,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-using System.Collections.Generic;
-
 using sar.Base;
-using sar.Commands;
-using sar.Tools;
 using WinServiceLauncher.Commands;
 
 namespace WinServiceLauncher

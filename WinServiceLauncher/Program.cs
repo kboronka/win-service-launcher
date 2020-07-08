@@ -1,4 +1,4 @@
-/* Copyright (C) 2019 Kevin Boronka
+/* Copyright (C) 2020 Kevin Boronka
  * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -14,7 +14,6 @@
  */
 
 using System;
-using System.Linq;
 using System.ServiceProcess;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -26,8 +25,6 @@ namespace WinServiceLauncher
 {
 	internal sealed class Program : Base.Program
 	{
-		static bool exitSystem = false;
-
 		#region Trap application termination
 		
 		[DllImport("Kernel32")]
@@ -49,9 +46,6 @@ namespace WinServiceLauncher
 
 			WinServiceLauncher.StopServices();
 			Thread.Sleep(250); 
-
-			//allow main to run off
-			exitSystem = true;
 			
 			ConsoleHelper.WriteLine("Shut Down Complete");
 
@@ -94,9 +88,9 @@ namespace WinServiceLauncher
 					return;
 				}
 			}
-			catch
+			catch (Exception ex)
 			{
-				
+				ConsoleHelper.WriteException(ex);
 			}
 		}
 	}
