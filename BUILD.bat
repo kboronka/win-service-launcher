@@ -16,7 +16,7 @@ pushd "%~dp0"
 	%SAR% -f.del WinServiceLauncher\bin\Release\*.* /q /svn
 	
 	echo building binaries
-	%SAR% -b.net 3.5 WinServiceLauncher.sln /p:Configuration=Release /p:Platform=\"x86\"
+	%SAR% -b.net 4.0 WinServiceLauncher.sln /p:Configuration=Release /p:Platform=\"x86\"
 	if errorlevel 1 goto BuildFailed	
 
 :BuildComplete
