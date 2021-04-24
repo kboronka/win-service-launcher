@@ -13,12 +13,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-using System.Collections.Generic;
-
 using sar.Base;
-using sar.Commands;
-using sar.Tools;
 using WinServiceLauncher.Commands;
 
 namespace WinServiceLauncher
@@ -29,12 +24,12 @@ namespace WinServiceLauncher
 		{
 			// load all command modules
 			base.commandList.AddRange(new Command[] {
-			                          	new Install(this),
-			                          	new Uninstall(this),
-			                          	new Run(this),
-			                          	new Start(this),
-			                          	new Stop(this)
-			                          });
+										  new Install(this),
+										  new Uninstall(this),
+										  new Run(this),
+										  new Start(this),
+										  new Stop(this)
+									  });
 		}
 	}
 }

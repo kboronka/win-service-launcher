@@ -13,27 +13,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-using System.Threading;
-
 using sar.Tools;
+using System;
 
 namespace WinServiceLauncher.Launchers
 {
 	public class OnInterval : Schedule
 	{
-		private long interval;		//ms
-		
+		private long interval;      //ms
+
 		public OnInterval(Launcher parent, long interval) : base(parent)
 		{
 			this.interval = interval;
 		}
-		
+
 		public OnInterval(Launcher parent, XML.Reader reader) : base(parent, reader)
 		{
 			this.interval = reader.GetAttributeLong("interval");
 		}
-		
+
 		protected override void ServiceLauncher()
 		{
 			if (DateTime.Now > this.lastRun.AddMilliseconds(this.interval))
@@ -41,12 +39,12 @@ namespace WinServiceLauncher.Launchers
 				this.Launch();
 			}
 		}
-		
+
 		internal override void Serialize(XML.Writer writer)
 		{
 			writer.WriteStartElement("OnInterval");
 			writer.WriteAttributeString("interval", this.interval);
-			writer.WriteEndElement();	// OnInterval
+			writer.WriteEndElement();   // OnInterval
 		}
 	}
 }

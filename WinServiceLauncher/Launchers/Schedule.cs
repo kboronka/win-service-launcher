@@ -1,5 +1,5 @@
 /* Copyright (C) 2019 Kevin Boronka
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -13,14 +13,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+using sar.Tools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
+using System.Linq;
 using System.Management;
-
-using sar.Tools;
+using System.Threading;
 
 namespace WinServiceLauncher.Launchers
 {
@@ -32,27 +32,27 @@ namespace WinServiceLauncher.Launchers
 		protected int processID;
 		protected string processName;
 		private List<int> processIDs;
-		
+
 		public Schedule(Launcher parent)
 		{
 			this.parent = parent;
 			this.processIDs = new List<int>();
 		}
-		
+
 		public Schedule(Launcher parent, XML.Reader reader)
 		{
 			this.parent = parent;
 			this.lastRun = reader.GetAttributeTimestamp("lastrun");
 			this.processIDs = new List<int>();
 		}
-		
+
 		internal abstract void Serialize(XML.Writer writer);
-		
+
 		#region Async
-		
+
 		private Thread launchLoopThread;
 		private bool launchLoopShutdown;
-		Process spawnedProcess;
+		private Process spawnedProcess;
 
 		public void StartAsync()
 		{
@@ -66,7 +66,7 @@ namespace WinServiceLauncher.Launchers
 				Program.Log(ex);
 			}
 		}
-		
+
 		public void StopAsync()
 		{
 			try
@@ -75,9 +75,10 @@ namespace WinServiceLauncher.Launchers
 				{
 					KillAllProcesses(this.processIDs);
 				}
-				
+
 				this.launchLoopShutdown = true;
-				if (this.launchLoopThread != null) {
+				if (this.launchLoopThread != null)
+				{
 					this.launchLoopThread.Join();
 				}
 			}
@@ -86,12 +87,12 @@ namespace WinServiceLauncher.Launchers
 				Program.Log(ex);
 			}
 		}
-		
+
 		private void LaunchLoop()
 		{
 			Thread.Sleep(250);
 			Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Loop Started");
-			
+
 			while (!launchLoopShutdown)
 			{
 				try
@@ -103,7 +104,6 @@ namespace WinServiceLauncher.Launchers
 						Thread.Sleep(8000);
 						this.processIDs = LogProcessIDs(spawnedProcess.Id);
 					}
-					
 				}
 				catch (Exception ex)
 				{
@@ -111,22 +111,22 @@ namespace WinServiceLauncher.Launchers
 					Thread.Sleep(1000);
 				}
 			}
-			
+
 			Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Loop Shutdown Gracefully");
 		}
-		
+
 		protected abstract void ServiceLauncher();
-		
+
 		public Process Launch()
 		{
 			try
 			{
 				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching " + this.parent.Command + " " + this.parent.Arguments);
-				
+
 				spawnedProcess = Start(parent.WorkingPath, parent.Command, parent.Arguments, parent.EnvironmentVariables);
 				this.processID = spawnedProcess.Id;
 				this.processName = spawnedProcess.ProcessName;
-				
+
 				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching complete");
 				this.lastRun = DateTime.Now;
 			}
@@ -135,10 +135,10 @@ namespace WinServiceLauncher.Launchers
 				Program.Log(this.parent.Name + " - " + this.GetType().Name.ToString() + " Launching failed");
 				Program.Log(ex);
 			}
-			
+
 			return spawnedProcess;
 		}
-		
+
 		public static Process Start(string workingDirectory, string command, string arguments, List<EnvironmentVariable> variables)
 		{
 			arguments = arguments.TrimWhiteSpace();
@@ -148,7 +148,7 @@ namespace WinServiceLauncher.Launchers
 			{
 				startInfo.EnvironmentVariables[e.Key.ToString()] = e.Value.ToString();
 			}
-			
+
 			foreach (var variable in variables)
 			{
 				startInfo.EnvironmentVariables[variable.Variable] = variable.Value;
@@ -158,10 +158,10 @@ namespace WinServiceLauncher.Launchers
 			startInfo.FileName = command;
 			startInfo.Arguments = arguments;
 			startInfo.UseShellExecute = false;
-			
+
 			return Process.Start(startInfo);
 		}
-		
+
 		private static void KillAllProcesses(List<int> pids)
 		{
 			foreach (var pid in pids)
@@ -171,7 +171,10 @@ namespace WinServiceLauncher.Launchers
 				try
 				{
 					Process proc = Process.GetProcessById(pid);
-					if (!proc.HasExited) proc.Kill();
+					if (!proc.HasExited)
+					{
+						proc.Kill();
+					}
 				}
 				catch (ArgumentException)
 				{
@@ -179,7 +182,7 @@ namespace WinServiceLauncher.Launchers
 				}
 			}
 		}
-		
+
 		private static List<int> LogProcessIDs(int pid)
 		{
 			var processSearcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
@@ -188,17 +191,16 @@ namespace WinServiceLauncher.Launchers
 			var pids = new List<int>();
 			if (processCollection != null)
 			{
-				foreach (ManagementObject mo in processCollection)
+				foreach (ManagementObject mo in processCollection.OfType<ManagementObject>())
 				{
 					pids.AddRange(LogProcessIDs(Convert.ToInt32(mo["ProcessID"])));
 				}
 			}
-			
+
 			pids.Add(pid);
 			return pids;
 		}
-		
-		#endregion
-		
+
+		#endregion Async
 	}
 }

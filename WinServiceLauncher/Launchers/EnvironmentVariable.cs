@@ -13,8 +13,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-
 using sar.Tools;
 
 namespace WinServiceLauncher.Launchers
@@ -26,7 +24,7 @@ namespace WinServiceLauncher.Launchers
 			this.Variable = reader.GetAttributeString("variable");
 			this.Value = reader.GetAttributeString("value");
 		}
-		
+
 		public string Variable { get; private set; }
 		public string Value { get; private set; }
 	}

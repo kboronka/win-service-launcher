@@ -1,5 +1,5 @@
 /* Copyright (C) 2019 Kevin Boronka
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -13,10 +13,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-using System.Threading;
-
 using sar.Tools;
+using System.Threading;
 
 namespace WinServiceLauncher.Launchers
 {
@@ -25,7 +23,7 @@ namespace WinServiceLauncher.Launchers
 		public OnShutdown(Launcher parent) : base(parent)
 		{
 		}
-		
+
 		public OnShutdown(Launcher parent, XML.Reader reader) : base(parent, reader)
 		{
 		}
@@ -35,11 +33,11 @@ namespace WinServiceLauncher.Launchers
 			// TODO: add code
 			Thread.Sleep(10);
 		}
-		
+
 		internal override void Serialize(XML.Writer writer)
 		{
 			writer.WriteStartElement("OnShutdown");
-			writer.WriteEndElement();	// OnShutdown
+			writer.WriteEndElement();   // OnShutdown
 		}
 	}
 }

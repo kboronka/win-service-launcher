@@ -13,11 +13,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
+using sar.Tools;
 using System.Diagnostics;
 using System.Threading;
-
-using sar.Tools;
 
 namespace WinServiceLauncher.Launchers
 {
@@ -27,16 +25,16 @@ namespace WinServiceLauncher.Launchers
 		{
 			this.processName = parent.Command;
 		}
-		
+
 		public KeepAlive(Launcher parent, XML.Reader reader) : base(parent, reader)
 		{
 			this.processName = reader.GetAttributeString("processName");
 		}
-		
+
 		protected override void ServiceLauncher()
 		{
 			Process process = null;
-			
+
 			if (processID > 0)
 			{
 				try
@@ -51,8 +49,9 @@ namespace WinServiceLauncher.Launchers
 				{
 
 				}
-				
-				if (process == null) this.processID = -1;
+
+				if (process == null)
+					this.processID = -1;
 			}
 			else
 			{
@@ -63,19 +62,19 @@ namespace WinServiceLauncher.Launchers
 					processID = process.Id;
 				}
 			}
-			
+
 			if (process == null)
 			{
 				this.Launch();
 				Thread.Sleep(1000);
 			}
 		}
-		
+
 		internal override void Serialize(XML.Writer writer)
 		{
 			writer.WriteStartElement("KeepAlive");
 			writer.WriteAttributeString("processName", this.processName);
-			writer.WriteEndElement();	// KeepAlive
+			writer.WriteEndElement();   // KeepAlive
 		}
 	}
 }

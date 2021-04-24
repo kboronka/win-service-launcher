@@ -1,5 +1,5 @@
 /* Copyright (C) 2019 Kevin Boronka
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -13,14 +13,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Xml;
-
 using sar.Tools;
+using System.Collections.Generic;
+using System.Xml;
 
 namespace WinServiceLauncher.Launchers
 {
@@ -31,7 +26,7 @@ namespace WinServiceLauncher.Launchers
 		private string command;
 		private string arguments;
 		private List<Schedule> schedules;
-		
+
 		public Launcher(XML.Reader reader)
 		{
 			this.name = reader.GetAttributeString("name");
@@ -40,7 +35,7 @@ namespace WinServiceLauncher.Launchers
 			this.arguments = reader.GetAttributeString("arguments");
 			this.schedules = new List<Schedule>();
 			this.EnvironmentVariables = new List<EnvironmentVariable>();
-			
+
 			while (reader.Read() && (reader.NodeType != XmlNodeType.EndElement))
 			{
 				if (reader.NodeType == XmlNodeType.Element)
@@ -51,21 +46,26 @@ namespace WinServiceLauncher.Launchers
 						case "OnInterval":
 							this.schedules.Add(new OnInterval(this, reader));
 							break;
+
 						case "OnTimeOfDay":
 							this.schedules.Add(new OnTimeOfDay(this, reader));
 							break;
+
 						case "OnStartup":
 							this.schedules.Add(new OnStartup(this, reader));
 							break;
+
 						case "OnShutdown":
 							this.schedules.Add(new OnShutdown(this, reader));
 							break;
+
 						case "KeepAlive":
 							this.schedules.Add(new KeepAlive(this, reader));
 							break;
+
 						case "Environment":
 							this.EnvironmentVariables.Add(new EnvironmentVariable(reader));
-							break;							
+							break;
 					}
 				}
 			}
@@ -75,7 +75,8 @@ namespace WinServiceLauncher.Launchers
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(name)) name = command;
+				if (string.IsNullOrEmpty(name))
+					name = command;
 				return name;
 			}
 		}
@@ -85,11 +86,11 @@ namespace WinServiceLauncher.Launchers
 		public string Command { get { return command; } }
 
 		public string Arguments { get { return arguments; } }
-		
+
 		public List<EnvironmentVariable> EnvironmentVariables { get; private set; }
-		
+
 		#region methods
-		
+
 		public void Start()
 		{
 			foreach (Schedule schedule in schedules)
@@ -97,19 +98,18 @@ namespace WinServiceLauncher.Launchers
 				schedule.StartAsync();
 			}
 		}
-		
+
 		public void Kill()
 		{
 			foreach (Schedule schedule in schedules)
 			{
 				schedule.StopAsync();
 			}
-			
+
 			Program.Log("Shutting Down " + this.command);
 			ConsoleHelper.KillProcess(this.command);
 		}
-		
-		#endregion
-		
+
+		#endregion methods
 	}
 }

@@ -1,5 +1,5 @@
 /* Copyright (C) 2019 Kevin Boronka
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -14,7 +14,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration.Install;
 using System.ServiceProcess;
@@ -26,7 +25,7 @@ namespace WinServiceLauncher
 	{
 		private ServiceProcessInstaller serviceProcessInstaller;
 		private ServiceInstaller serviceInstaller;
-		
+
 		public ProjectInstaller()
 		{
 			//this.AfterInstall += new InstallEventHandler(ServiceInstaller_AfterInstall);
@@ -38,12 +37,14 @@ namespace WinServiceLauncher
 			string password = GetContextParameter("password").Trim();
 			Program.Log("username = " + username);
 			Program.Log("password = " + password);
-			
+
 			if (!String.IsNullOrEmpty(username))
 			{
-				if (username != "") serviceProcessInstaller.Username = username;
-				if (password != "") serviceProcessInstaller.Password = password;
-				
+				if (username != "")
+					serviceProcessInstaller.Username = username;
+				if (password != "")
+					serviceProcessInstaller.Password = password;
+
 				serviceProcessInstaller.Account = ServiceAccount.User;
 			}
 			else
@@ -51,21 +52,21 @@ namespace WinServiceLauncher
 				serviceProcessInstaller.Account = ServiceAccount.LocalSystem;
 				//serviceProcessInstaller.Account = ServiceAccount.NetworkService;
 			}
-			
+
 			serviceInstaller.ServiceName = WinServiceLauncher.MyServiceName;
 			serviceInstaller.StartType = ServiceStartMode.Automatic;
 			//serviceInstaller.DelayedAutoStart = true;
-			
+
 			this.Installers.AddRange(new Installer[] { serviceProcessInstaller, serviceInstaller });
 		}
-		
+
 		private void ServiceInstaller_AfterInstall(object sender, InstallEventArgs e)
 		{
 			var serviceController = new ServiceController(serviceInstaller.ServiceName);
 			//ServiceHelper.ChangeStartMode(serviceController, ServiceStartMode.Automatic);
 			serviceController.Start();
 		}
-		
+
 		public string GetContextParameter(string key)
 		{
 			string returnValue = "";
@@ -77,7 +78,7 @@ namespace WinServiceLauncher
 			{
 				returnValue = "";
 			}
-			
+
 			return returnValue;
 		}
 	}

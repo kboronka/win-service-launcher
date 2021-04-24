@@ -1,5 +1,5 @@
 /* Copyright (C) 2019 Kevin Boronka
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -14,15 +14,8 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.ServiceProcess;
-using System.Text;
 using System.Threading;
-
-using sar.Tools;
 using WinServiceLauncher.Launchers;
 
 namespace WinServiceLauncher
@@ -30,28 +23,28 @@ namespace WinServiceLauncher
 	public class WinServiceLauncher : ServiceBase
 	{
 		public const string MyServiceName = "WinServiceLauncher";
-		
+
 		public WinServiceLauncher()
 		{
 			InitializeComponent();
 		}
-		
+
 		private void InitializeComponent()
 		{
 			this.ServiceName = MyServiceName;
 		}
-		
+
 		protected override void Dispose(bool disposing)
 		{
 			base.Dispose(disposing);
 		}
-		
+
 		protected override void OnStart(string[] args)
 		{
 			Thread thread = new Thread(StartServices);
 			thread.Start();
 		}
-		
+
 		protected override void OnStop()
 		{
 			foreach (Launcher app in Configuration.All.Launchers)
@@ -59,13 +52,13 @@ namespace WinServiceLauncher
 				app.Kill();
 			}
 		}
-		
+
 		public static void StartServices()
 		{
 			try
 			{
 				Configuration.Load();
-				
+
 				if (Configuration.All.Launchers != null)
 				{
 					foreach (Launcher app in Configuration.All.Launchers)

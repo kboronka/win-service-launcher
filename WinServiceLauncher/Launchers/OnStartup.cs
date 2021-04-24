@@ -1,5 +1,5 @@
 /* Copyright (C) 2019 Kevin Boronka
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -13,21 +13,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-using System.Threading;
-
 using sar.Tools;
+using System.Threading;
 
 namespace WinServiceLauncher.Launchers
 {
 	public class OnStartup : Schedule
 	{
 		private bool launchComplete;
-		
+
 		public OnStartup(Launcher parent) : base(parent)
 		{
 		}
-		
+
 		public OnStartup(Launcher parent, XML.Reader reader) : base(parent, reader)
 		{
 		}
@@ -48,7 +46,7 @@ namespace WinServiceLauncher.Launchers
 		internal override void Serialize(XML.Writer writer)
 		{
 			writer.WriteStartElement("OnStartup");
-			writer.WriteEndElement();	// OnStartup
+			writer.WriteEndElement();   // OnStartup
 		}
 	}
 }

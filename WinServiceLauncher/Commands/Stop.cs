@@ -1,5 +1,5 @@
 /* Copyright (C) 2019 Kevin Boronka
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -13,27 +13,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+using sar.Tools;
 using System;
 using System.Collections.Generic;
-using System.Configuration.Install;
-using System.Threading;
-using System.Reflection;
-using System.ServiceProcess;
-
-using sar.Base;
-using sar.Tools;
 
 namespace WinServiceLauncher.Commands
 {
 	public class Stop : sar.Base.Command
 	{
 		public Stop(sar.Base.CommandHub parent) : base(parent, "Stop",
-		                                              new List<string> { "stop" },
-		                                              @"-stop",
-		                                              new List<string> { "-stop" })
+													  new List<string> { "stop" },
+													  @"-stop",
+													  new List<string> { "-stop" })
 		{
 		}
-		
+
 		public override int Execute(string[] args)
 		{
 			// sanity check
@@ -41,10 +35,10 @@ namespace WinServiceLauncher.Commands
 			{
 				throw new ArgumentException("incorrect number of arguments");
 			}
-			
+
 			ConsoleHelper.WriteLine("Stopping Service");
 			bool success = ServiceHelper.TryStop("WinServiceLauncher.exe");
-			
+
 			if (success)
 			{
 				ConsoleHelper.WriteLine("");

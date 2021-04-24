@@ -13,8 +13,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-
 namespace WinServiceLauncher.Launchers
 {
 	public class History

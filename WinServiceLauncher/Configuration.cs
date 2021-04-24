@@ -13,14 +13,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
+using sar.Tools;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
-using System.Text;
 using System.Xml;
-
-using sar.Tools;
 using WinServiceLauncher.Launchers;
 
 namespace WinServiceLauncher
@@ -28,73 +24,88 @@ namespace WinServiceLauncher
 	public class Configuration
 	{
 		#region singleton
-		
+
 		private static Configuration all;
-		
-		public static Configuration All {
-			get {
-				if (Configuration.all == null) {
+
+		public static Configuration All
+		{
+			get
+			{
+				if (Configuration.all == null)
+				{
 					var path = ApplicationInfo.CurrentDirectory + AssemblyInfo.Name + ".xml";
-					
-					#if DEBUG
+
+#if DEBUG
 					path = Path.Combine(ApplicationInfo.CurrentDirectory, @"..\..\..\");
 					path = Path.Combine(path, AssemblyInfo.Name + ".xml");
-					#endif
-					
+#endif
+
 					Configuration.all = new Configuration(path);
 				}
-				
+
 				return Configuration.all;
 			}
 		}
-		
+
 		public static void Load()
 		{
 			Configuration.all = Configuration.All;
 		}
-		
+
 		#endregion
-		
+
 		private List<Launcher> launchers;
-		
-		public 	Configuration(string path)
+
+		public Configuration(string path)
 		{
-			if (File.Exists(path)) {
+			if (File.Exists(path))
+			{
 				var reader = new XML.Reader(path);
-				try {
+				try
+				{
 					this.Deserialize(reader);
-				} catch {
-					
 				}
-				
+				catch
+				{
+
+				}
+
 				reader.Close();
 			}
 		}
-		
-		public List<Launcher> Launchers {
-			get {
+
+		public List<Launcher> Launchers
+		{
+			get
+			{
 				if (launchers == null)
 					Configuration.Load();
 				return launchers;
 			}
 		}
-		
+
 		protected void Deserialize(XML.Reader reader)
 		{
 			this.launchers = new List<Launcher>();
 
-			try {
-				while (reader.Read()) {
-					if (reader.NodeType == XmlNodeType.Element) {
-						switch (reader.Name) {
+			try
+			{
+				while (reader.Read())
+				{
+					if (reader.NodeType == XmlNodeType.Element)
+					{
+						switch (reader.Name)
+						{
 							case "Launcher":
 								this.launchers.Add(new Launcher(reader));
 								break;
 						}
 					}
 				}
-			} catch {
-				
+			}
+			catch
+			{
+
 			}
 		}
 	}

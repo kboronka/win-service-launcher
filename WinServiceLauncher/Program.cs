@@ -1,5 +1,5 @@
 /* Copyright (C) 2019 Kevin Boronka
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -13,30 +13,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-using System.Linq;
-using System.ServiceProcess;
-using System.Runtime.InteropServices;
-using System.Threading;
-
-using Base=sar.Base;
 using sar.Tools;
+using System;
+using System.Runtime.InteropServices;
+using System.ServiceProcess;
+using System.Threading;
+using Base = sar.Base;
 
 namespace WinServiceLauncher
 {
 	internal sealed class Program : Base.Program
 	{
-		static bool exitSystem = false;
+		private static bool exitSystem = false;
 
 		#region Trap application termination
-		
+
 		[DllImport("Kernel32")]
 		private static extern bool SetConsoleCtrlHandler(EventHandler handler, bool add);
 
 		private delegate bool EventHandler(CtrlType sig);
-		static EventHandler _handler;
 
-		enum CtrlType {
+		private static EventHandler _handler;
+
+		private enum CtrlType
+		{
 			CTRL_C_EVENT = 0,
 			CTRL_BREAK_EVENT = 1,
 			CTRL_CLOSE_EVENT = 2,
@@ -44,15 +44,16 @@ namespace WinServiceLauncher
 			CTRL_SHUTDOWN_EVENT = 6
 		}
 
-		private static bool Handler(CtrlType sig) {
+		private static bool Handler(CtrlType sig)
+		{
 			ConsoleHelper.WriteLine("Shutting Down");
 
 			WinServiceLauncher.StopServices();
-			Thread.Sleep(250); 
+			Thread.Sleep(250);
 
 			//allow main to run off
 			exitSystem = true;
-			
+
 			ConsoleHelper.WriteLine("Shut Down Complete");
 
 			//shutdown right away so there are no lingering threads
@@ -60,15 +61,15 @@ namespace WinServiceLauncher
 
 			return true;
 		}
-		
-		#endregion
-		
-		static void Main(string[] args)
+
+		#endregion Trap application termination
+
+		private static void Main(string[] args)
 		{
 			try
 			{
 				Base.Program.LogInfo();
-				
+
 				if (!System.Environment.UserInteractive)
 				{
 					ServiceBase.Run(new ServiceBase[] { new WinServiceLauncher() });
@@ -79,7 +80,7 @@ namespace WinServiceLauncher
 					{
 						_handler += new EventHandler(Handler);
 						SetConsoleCtrlHandler(_handler, true);
-						
+
 						var hub = new CommandHub();
 						ConsoleHelper.ApplicationShortTitle();
 						hub.ProcessCommands(args);
@@ -87,16 +88,14 @@ namespace WinServiceLauncher
 					catch (Exception ex)
 					{
 						ConsoleHelper.WriteException(ex);
-
 					}
-					
+
 					WinServiceLauncher.StopServices();
 					return;
 				}
 			}
 			catch
 			{
-				
 			}
 		}
 	}
