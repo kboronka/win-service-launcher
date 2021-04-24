@@ -22,7 +22,7 @@ pushd "%~dp0"
 :BuildComplete
 	copy WinServiceLauncher\bin\Release\*.exe dist\*.exe
 	copy WinServiceLauncher\bin\Release\*.dll dist\*.dll
-	copy WinServiceLauncher\bin\Release\*.exe.config dist\*.exe.config
+	copy WinServiceLauncher\bin\Release\*.config dist\*.config
 	copy WinServiceLauncher\bin\Release\*.pdb dist\*.pdb
 	copy WinServiceLauncher\WinServiceLauncher.example.xml dist\WinServiceLauncher.example.xml
 	copy LICENSE dist\LICENSE
