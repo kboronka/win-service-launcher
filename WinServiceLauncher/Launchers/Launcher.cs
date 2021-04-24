@@ -1,5 +1,5 @@
 /* Copyright (C) 2021 Kevin Boronka
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -22,10 +22,10 @@ namespace WinServiceLauncher.Launchers
 	public class Launcher
 	{
 		private string name;
-		private string workingPath;
-		private string command;
-		private string arguments;
-		private List<Schedule> schedules;
+		private readonly string workingPath;
+		private readonly string command;
+		private readonly string arguments;
+		private readonly List<Schedule> schedules;
 
 		public Launcher(XML.Reader reader)
 		{

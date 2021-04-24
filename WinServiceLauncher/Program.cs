@@ -1,5 +1,5 @@
 /* Copyright (C) 2021 Kevin Boronka
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -68,8 +68,6 @@ namespace WinServiceLauncher
 		{
 			try
 			{
-				Base.Program.LogInfo();
-
 				if (!System.Environment.UserInteractive)
 				{
 					ServiceBase.Run(new ServiceBase[] { new WinServiceLauncher() });
@@ -78,6 +76,7 @@ namespace WinServiceLauncher
 				{
 					try
 					{
+						sar.Logger.LogToConsole = true;
 						_handler += new EventHandler(Handler);
 						SetConsoleCtrlHandler(_handler, true);
 
@@ -97,6 +96,16 @@ namespace WinServiceLauncher
 			catch
 			{
 			}
+		}
+
+		public static void Log(Exception ex)
+		{
+			sar.Logger.Log(ex.Message);
+		}
+
+		public static void Log(string message)
+		{
+			sar.Logger.Log(message);
 		}
 	}
 }

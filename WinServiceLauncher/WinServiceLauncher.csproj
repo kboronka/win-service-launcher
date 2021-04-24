@@ -4,7 +4,7 @@
     <ProjectGuid>{5CE8FCB6-9EB4-4290-9E95-B2F252C12C90}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>WinServiceLauncher</RootNamespace>
     <AssemblyName>WinServiceLauncher</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
